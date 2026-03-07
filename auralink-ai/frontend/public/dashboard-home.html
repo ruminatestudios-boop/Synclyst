@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="auralink-publishing-url" content="http://localhost:8001" />
   <title>Home | Dashboard | AuraLink AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +25,7 @@
     <header class="flex items-center justify-between px-5 pt-6 pb-4 shrink-0 bg-zinc-50">
       <span class="font-serif text-2xl font-bold text-zinc-900">AuraLink</span>
       <div class="flex items-center gap-2">
-        <a href="flow-1.html" class="w-9 h-9 rounded-full bg-zinc-900 text-white flex items-center justify-center text-lg font-bold leading-none no-underline hover:bg-zinc-800 transition-colors" aria-label="Add / Scan new product">+</a>
+        <a href="/landing.html?mode=scan" class="w-9 h-9 rounded-full bg-zinc-900 text-white flex items-center justify-center text-lg font-bold leading-none no-underline hover:bg-zinc-800 transition-colors" aria-label="Add / Scan new product">+</a>
         <a href="settings.html" class="w-9 h-9 rounded-full bg-zinc-200 border border-zinc-300 flex items-center justify-center text-sm font-semibold text-zinc-600 no-underline">J</a>
       </div>
     </header>
@@ -60,7 +61,7 @@
           </div>
           <div class="flex gap-3">
             <div class="flex-1 rounded-xl bg-zinc-50 border border-zinc-200 p-3 text-center">
-              <p class="font-serif text-xl font-bold text-zinc-900">84</p>
+              <p id="dashboard-listed-count" class="font-serif text-xl font-bold text-zinc-900">—</p>
               <p class="text-[10px] text-zinc-500 mt-0.5">listed</p>
             </div>
             <div class="flex-1 rounded-xl bg-zinc-50 border border-zinc-200 p-3 text-center">
@@ -89,15 +90,43 @@
         </div>
 
         <!-- CTA -->
-        <a href="flow-1.html" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl bg-zinc-900 text-white font-semibold text-[15px] border border-zinc-800 no-underline">
+        <a href="/landing.html?mode=scan" class="flex items-center justify-center gap-2 w-full py-3.5 rounded-2xl bg-zinc-900 text-white font-semibold text-[15px] border border-zinc-800 no-underline">
           <span class="w-5 h-5 rounded-lg bg-white/20 flex items-center justify-center text-[10px] font-bold">C</span>
           Scan new product
           <span class="text-white/70">→</span>
         </a>
-        <p class="text-center text-xs text-zinc-500 mt-2">Or <a href="flow-1.html" class="font-medium text-zinc-700 underline">list a new item</a> with photo</p>
+        <p class="text-center text-xs text-zinc-500 mt-2">Or <a href="/landing.html?mode=scan" class="font-medium text-zinc-700 underline">list a new item</a> with photo</p>
         </div>
       </div>
     </main>
   </div>
+  <script>
+    (function() {
+      var meta = document.querySelector('meta[name="auralink-publishing-url"]');
+      var base = (meta && meta.getAttribute('content')) ? meta.getAttribute('content').trim().replace(/\/$/, '') : 'http://localhost:8001';
+      var host = window.location.hostname;
+      if (host && host !== 'localhost' && host !== '127.0.0.1' && base.indexOf('localhost') !== -1)
+        base = window.location.protocol + '//' + host + ':8001';
+      function getToken() {
+        try { return sessionStorage.getItem('auralink_jwt'); } catch (e) { return null; }
+      }
+      function fetchToken() {
+        return fetch(base + '/auth/dev-token').then(function(r) { return r.ok ? r.json() : null; })
+          .then(function(d) { if (d && d.token) { try { sessionStorage.setItem('auralink_jwt', d.token); } catch (e) {} return d.token; } return null; });
+      }
+      var token = getToken();
+      (token ? Promise.resolve(token) : fetchToken()).then(function(t) {
+        if (!t) { var el = document.getElementById('dashboard-listed-count'); if (el) el.textContent = '0'; return; }
+        return fetch(base + '/api/listings', { headers: { 'Authorization': 'Bearer ' + t } })
+          .then(function(r) { return r.ok ? r.json() : null; })
+          .then(function(data) {
+            var el = document.getElementById('dashboard-listed-count');
+            if (el && data && Array.isArray(data.listings)) el.textContent = String(data.listings.length);
+            else if (el) el.textContent = '0';
+          })
+          .catch(function() { var el = document.getElementById('dashboard-listed-count'); if (el) el.textContent = '0'; });
+      }).catch(function() { var el = document.getElementById('dashboard-listed-count'); if (el) el.textContent = '0'; });
+    })();
+  </script>
 </body>
 </html>

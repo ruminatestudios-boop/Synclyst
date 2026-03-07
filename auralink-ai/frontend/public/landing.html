@@ -96,7 +96,81 @@
         /* Vercel-style: subtle section background */
         .vercel-section-alt { background: #fafafa; }
         .vercel-section-alt .vercel-card { background: #fff; }
+        /* Benefits & key features: highlighted block */
+        .features-benefits-section {
+            background: linear-gradient(180deg, #f5f5f5 0%, #fafafa 50%, #f5f5f5 100%);
+            border-top: 1px solid #eee;
+            border-bottom: 1px solid #eee;
+        }
+        .features-benefits-section .features-benefits-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.375rem 0.75rem;
+            border-radius: 9999px;
+            background: #111;
+            color: #fff;
+            font-size: 0.6875rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+        .features-benefits-section .feature-benefit-card {
+            background: #fff;
+            border: 1px solid #eaeaea;
+            border-radius: 1rem;
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .features-benefits-section .feature-benefit-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #111 0%, #333 100%);
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+        .features-benefits-section .feature-benefit-card:hover {
+            border-color: #111;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+        .features-benefits-section .feature-benefit-card:hover::before {
+            opacity: 1;
+        }
+        .features-benefits-section .feature-benefit-card .icon-wrap {
+            background: linear-gradient(135deg, #f0f0f0 0%, #e8e8e8 100%);
+            border: 1px solid #eee;
+        }
         .vercel-dot-pattern { background-image: radial-gradient(circle at 1px 1px, #e5e5e5 1px, transparent 0); background-size: 24px 24px; background-position: 0 0; }
+        .scan-hero-btn:hover { background-color: #003d3d !important; border-color: #003d3d; }
+        /* Live integration icon: subtle pulse */
+        @keyframes live-icon-pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(16, 185, 129, 0)); }
+            50% { transform: scale(1.06); filter: drop-shadow(0 0 8px rgba(16, 185, 129, 0.35)); }
+        }
+        .integration-icon-live {
+            animation: live-icon-pulse 2.2s ease-in-out infinite;
+        }
+        /* Comparison: AuraLink card subtle glow + Shopify Sync live pulse */
+        @keyframes comparison-card-glow {
+            0%, 100% { box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+            50% { box-shadow: 0 20px 50px rgba(0,0,0,0.14), 0 0 0 1px rgba(255,255,255,0.06); }
+        }
+        .comparison-auralink-card {
+            animation: comparison-card-glow 3s ease-in-out infinite;
+        }
+        @keyframes comparison-sync-pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.85; }
+        }
+        .comparison-shopify-sync .comparison-sync-bar {
+            animation: comparison-sync-pulse 2s ease-in-out infinite;
+        }
     </style>
 </head>
 <body class="min-h-screen bg-white text-black selection:bg-black selection:text-white">
@@ -215,37 +289,23 @@
 
     <!-- Nav -->
     <header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-[#eaeaea]">
-        <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-10">
-                <a href="#" class="flex items-center gap-2">
-                    <span class="text-xl font-bold tracking-tight text-[#111]">AuraLink</span>
-                </a>
+        <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between relative">
+            <div class="flex items-center gap-6 flex-1 justify-start min-w-0">
                 <div class="hidden md:flex items-center gap-6">
                     <a href="#features" onclick="handleNavigate(event, 'features')" class="text-sm text-[#555] hover:text-[#111] transition-colors">Features</a>
                     <a href="#comparison" onclick="handleNavigate(event, 'comparison')" class="text-sm text-[#555] hover:text-[#111] transition-colors">Comparison</a>
                     <a href="#pricing" onclick="handleNavigate(event, 'pricing')" class="text-sm text-[#555] hover:text-[#111] transition-colors">Pricing</a>
                 </div>
             </div>
-            <div class="hidden md:flex items-center gap-4">
-                <a href="#" class="text-sm text-[#555] hover:text-[#111] transition-colors">Contact</a>
-                <a href="#" class="text-sm text-[#555] hover:text-[#111] transition-colors">Login</a>
+            <a href="#" class="flex items-center gap-2 flex-shrink-0 absolute left-1/2 -translate-x-1/2">
+                <span class="text-xl font-bold tracking-tight text-[#111]">AuraLink</span>
+            </a>
+            <div class="hidden md:flex items-center gap-4 flex-1 justify-end min-w-0">
                 <button class="bg-black text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-zinc-800 transition-all">
                     Start Deploying
                 </button>
             </div>
-            <button class="md:hidden" id="menu-toggle">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
         </nav>
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-[#eaeaea] overflow-hidden">
-            <div class="flex flex-col p-6 gap-4">
-                <a href="#features" onclick="handleNavigate(event, 'features'); document.getElementById('mobile-menu').classList.add('hidden');" class="text-sm font-medium">Features</a>
-                <a href="#comparison" onclick="handleNavigate(event, 'comparison'); document.getElementById('mobile-menu').classList.add('hidden');" class="text-sm font-medium">Comparison</a>
-                <a href="#pricing" onclick="handleNavigate(event, 'pricing'); document.getElementById('mobile-menu').classList.add('hidden');" class="text-sm font-medium">Pricing</a>
-                <hr class="border-[#eaeaea]" />
-                <button class="w-full py-2 bg-black text-white rounded-md text-sm font-medium">Sign Up</button>
-            </div>
-        </div>
     </header>
 
     <div id="main-content">
@@ -253,11 +313,11 @@
         <!-- Hero -->
         <section class="relative pt-32 pb-20 px-6 overflow-hidden vercel-dot-pattern">
             <div class="max-w-5xl mx-auto text-center">
-                <div class="inline-flex items-center gap-2 p-1.5 md:p-2 mb-8 bg-white border border-[#eaeaea] rounded-lg md:rounded-xl max-w-lg mx-auto text-left">
+                <div class="inline-flex items-center gap-2 p-1.5 md:p-2 mb-8 bg-white border border-[#eaeaea] rounded-lg md:rounded-xl mx-auto text-left">
                     <div class="flex-shrink-0 w-6 h-6 md:w-7 md:h-7 rounded-md bg-zinc-100 flex items-center justify-center">
                         <i data-lucide="sparkles" class="w-3 h-3 md:w-4 md:h-4 text-zinc-600"></i>
                     </div>
-                    <p class="text-[10px] md:text-xs text-[#555] leading-tight vercel-body">
+                    <p class="text-[10px] md:text-xs text-[#555] leading-tight vercel-body whitespace-nowrap">
                         <span class="font-semibold text-[#111]">Smart Suggest:</span> AI gets smarter the more you use it—it gets to know your products.
                     </p>
                 </div>
@@ -268,7 +328,7 @@
                     AuraLink is the platform for high-performance Shopify sellers. Turn product photos into SEO-ready listings instantly.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="/landing.html?mode=scan" class="bg-black text-white px-8 py-3.5 rounded-xl font-semibold border border-black hover:bg-zinc-900 transition-all flex items-center gap-2.5 group inline-flex">
+                    <a href="/landing.html?mode=scan" class="scan-hero-btn text-white px-8 py-3.5 rounded-xl font-semibold border border-[#002D2D] transition-all flex items-center gap-2.5 group inline-flex" style="background-color: #002D2D;">
                         <div class="relative flex items-center justify-center w-5 h-5 overflow-hidden">
                             <i data-lucide="camera" class="w-5 h-5 relative z-10"></i>
                             <div class="absolute left-0 right-0 h-[2px] bg-white shadow-[0_0_10px_rgba(255,255,255,0.8)] animate-scan-sweep z-20"></div>
@@ -290,54 +350,59 @@
         </section>
 
         <!-- Marquee: Shopify live + coming soon -->
-        <section class="py-10 border-y border-[#eaeaea] overflow-hidden bg-white">
+        <section class="py-5 border-y border-[#eaeaea] overflow-hidden bg-white">
             <div class="flex justify-center">
-                <div class="inline-flex items-center justify-center rounded-xl border border-[#eaeaea] bg-white px-6 py-4 shadow-sm">
-                    <p class="text-[10px] font-semibold text-white uppercase tracking-wider py-1.5 px-3 bg-black rounded-md vercel-body">Shopify now live</p>
+                <div class="inline-flex items-center justify-center gap-2 rounded-lg border border-[#eaeaea] bg-white px-4 py-2 shadow-sm">
+                    <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/shopify.svg" alt="" class="h-4 w-4" style="filter: brightness(0);" />
+                    <span class="text-[10px] font-semibold uppercase tracking-wider py-0.5 px-2 bg-black rounded vercel-body"><span class="text-white">Shopify now </span><span class="text-emerald-500">live</span></span>
                 </div>
             </div>
-            <p class="text-center text-xs text-zinc-400 mb-6 mt-3 vercel-body">More integrations coming soon</p>
+            <p class="text-center text-xs text-zinc-400 mt-2 mb-4 vercel-body">More integrations coming soon</p>
             <div class="animate-marquee whitespace-nowrap" id="marquee-content">
                 <!-- Content generated by JS -->
             </div>
         </section>
 
-        <!-- Features: Vercel-style card grid with alt background -->
-        <section id="features" class="py-24 px-6 vercel-section-alt">
+        <!-- Features: Benefits & key features (highlighted) -->
+        <section id="features" class="py-24 px-6 vercel-section-alt features-benefits-section">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-16">
+                    <div class="features-benefits-label">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+                        Benefits & key features
+                    </div>
                     <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 vercel-headline">Your product, delivered.</h2>
                     <p class="text-[#555] text-lg max-w-xl mx-auto vercel-body">Security, speed, and AI included—so you can focus on selling.</p>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <div class="vercel-card p-8 rounded-2xl">
-                        <div class="w-10 h-10 rounded-lg bg-zinc-50 flex items-center justify-center mb-6">
-                            <i data-lucide="cpu" class="w-5 h-5"></i>
+                    <div class="feature-benefit-card vercel-card p-8 rounded-2xl">
+                        <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="camera" class="w-5 h-5 text-[#111]"></i>
                         </div>
-                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Visual Intelligence</h3>
-                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Advanced vision models that understand material, brand, and specs from a single photo.</p>
+                        <h3 class="text-lg font-semibold mb-3 text-[#111]">List in seconds, not hours</h3>
+                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Snap a photo and get a full listing—title, description, price, and category—so you can stop typing and start selling.</p>
                     </div>
-                    <div class="vercel-card p-8 rounded-2xl">
-                        <div class="w-10 h-10 rounded-lg bg-zinc-50 flex items-center justify-center mb-6">
-                            <i data-lucide="globe" class="w-5 h-5"></i>
+                    <div class="feature-benefit-card vercel-card p-8 rounded-2xl">
+                        <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="upload" class="w-5 h-5 text-[#111]"></i>
                         </div>
-                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Global Scale</h3>
-                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Deploy your listings to Shopify, Etsy, and Amazon with a single click.</p>
+                        <h3 class="text-lg font-semibold mb-3 text-[#111]">One click to your store</h3>
+                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Push listings straight to Shopify as drafts. Review, tweak if you like, then publish when you’re ready.</p>
                     </div>
-                    <div class="vercel-card p-8 rounded-2xl">
-                        <div class="w-10 h-10 rounded-lg bg-zinc-50 flex items-center justify-center mb-6">
-                            <i data-lucide="command" class="w-5 h-5"></i>
+                    <div class="feature-benefit-card vercel-card p-8 rounded-2xl">
+                        <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="search" class="w-5 h-5 text-[#111]"></i>
                         </div>
-                        <h3 class="text-lg font-semibold mb-3 text-[#111]">SEO Optimized</h3>
-                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Every listing is generated with high-performance SEO titles and descriptions.</p>
+                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Get found by buyers</h3>
+                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Every listing is built to perform in search—so more customers can discover your products.</p>
                     </div>
-                    <div class="vercel-card p-8 rounded-2xl relative">
+                    <div class="feature-benefit-card vercel-card p-8 rounded-2xl relative">
                         <span class="absolute top-4 right-4 text-[10px] font-semibold px-2 py-0.5 rounded bg-black text-white">New</span>
-                        <div class="w-10 h-10 rounded-lg bg-zinc-50 flex items-center justify-center mb-6">
-                            <i data-lucide="shield" class="w-5 h-5"></i>
+                        <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center mb-6">
+                            <i data-lucide="shield" class="w-5 h-5 text-[#111]"></i>
                         </div>
-                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Secure by Default</h3>
-                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Enterprise-grade security for your store data and product assets.</p>
+                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Your data stays yours</h3>
+                        <p class="text-sm text-[#555] leading-relaxed vercel-body">We protect your store and product info so you can list with confidence.</p>
                     </div>
                 </div>
             </div>
@@ -410,7 +475,7 @@
                     <!-- AuraLink Side -->
                     <div class="relative">
                         <div class="absolute -top-6 -right-6 w-24 h-24 bg-black rounded-full blur-3xl opacity-10 -z-10"></div>
-                        <div class="p-10 rounded-2xl border border-black bg-black text-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative overflow-hidden">
+                        <div class="comparison-auralink-card p-10 rounded-2xl border border-black bg-black text-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative overflow-hidden">
                             <div class="absolute top-0 right-0 p-4">
                                 <div class="px-2 py-1 rounded bg-zinc-800 text-[10px] font-bold tracking-tighter border border-zinc-700">98% FASTER</div>
                             </div>
@@ -444,13 +509,16 @@
                                         <div class="h-full bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]" style="width: 6%"></div>
                                     </div>
                                 </div>
-                                <div class="group">
+                                <div class="group comparison-shopify-sync">
                                     <div class="flex justify-between items-end mb-2">
                                         <span class="text-sm font-bold text-zinc-400">Shopify Sync</span>
-                                        <span class="text-sm font-mono text-white">0.5s</span>
+                                        <span class="flex items-center gap-1.5">
+                                            <span class="px-1.5 py-0.5 rounded text-[9px] font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">Live</span>
+                                            <span class="text-sm font-mono text-white">0.5s</span>
+                                        </span>
                                     </div>
                                     <div class="h-1.5 w-full bg-zinc-900 rounded-full overflow-hidden">
-                                        <div class="h-full bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]" style="width: 2%"></div>
+                                        <div class="comparison-sync-bar h-full bg-white rounded-full shadow-[0_0_10px_rgba(255,255,255,0.5)]" style="width: 2%"></div>
                                     </div>
                                 </div>
                                 
@@ -532,7 +600,7 @@
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-16">
                     <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 vercel-headline">Pricing</h2>
-                    <p class="text-[#555] vercel-body">Choose the plan that fits your scale.</p>
+                    <p class="text-[#555] vercel-body">Choose the plan that fits your scale. Pay by scans—no surprise API bills.</p>
                 </div>
                 <div class="grid md:grid-cols-3 gap-6">
                     <div class="vercel-card p-8 flex flex-col">
@@ -546,6 +614,7 @@
                         <ul class="space-y-4 mb-10 flex-1">
                             <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>3 Scans / Month</li>
                             <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Shopify Sync</li>
+                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Web enrichment</li>
                             <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Community Support</li>
                         </ul>
                         <button class="w-full py-2 rounded-md font-medium bg-white text-black border border-[#eaeaea] hover:border-black transition-all">Start for Free</button>
@@ -556,32 +625,35 @@
                             <p class="text-sm text-[#666]">For professional sellers.</p>
                         </div>
                         <div class="mb-8">
-                            <span class="text-4xl font-extrabold tracking-tighter">$20</span>
+                            <span class="text-4xl font-extrabold tracking-tighter">$29</span>
                             <span class="text-[#666] text-sm ml-1">/mo</span>
                         </div>
                         <ul class="space-y-4 mb-10 flex-1">
-                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Unlimited Scans</li>
-                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Omnichannel (Beta)</li>
+                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>250 Scans / Month</li>
+                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Shopify Sync</li>
+                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Web enrichment</li>
                             <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Priority Support</li>
-                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Custom Tags</li>
                         </ul>
-                        <button class="w-full py-2 rounded-md font-medium bg-black text-white border border-black hover:bg-white hover:text-black transition-all">Start Trial</button>
+                        <button class="w-full py-2 rounded-md font-medium bg-black text-white border border-black hover:bg-white hover:text-black transition-all">Upgrade plan</button>
                     </div>
                     <div class="vercel-card p-8 flex flex-col">
                         <div class="mb-8">
                             <h3 class="text-xl font-bold mb-2">Enterprise</h3>
-                            <p class="text-sm text-[#666]">For large teams.</p>
+                            <p class="text-sm text-[#666]">For large teams & batch.</p>
                         </div>
                         <div class="mb-8">
-                            <span class="text-4xl font-extrabold tracking-tighter">Custom</span>
+                            <span class="text-4xl font-extrabold tracking-tighter">$79</span>
+                            <span class="text-[#666] text-sm ml-1">/mo</span>
                         </div>
                         <ul class="space-y-4 mb-10 flex-1">
-                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Audit Mode</li>
-                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Bulk Inventory</li>
+                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>1,000 Scans / Month</li>
+                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i><strong>Batch processing</strong></li>
+                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Shopify Sync</li>
                             <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>API Access</li>
-                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>SSO / SAML</li>
+                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>Priority Support</li>
+                            <li class="flex items-center gap-3 text-sm text-[#666]"><i data-lucide="check" class="w-4 h-4 text-black"></i>SSO / SAML (on request)</li>
                         </ul>
-                        <button class="w-full py-2 rounded-md font-medium bg-white text-black border border-[#eaeaea] hover:border-black transition-all">Contact Sales</button>
+                        <button class="w-full py-2 rounded-md font-medium bg-white text-black border border-[#eaeaea] hover:border-black transition-all">Upgrade plan</button>
                     </div>
                 </div>
             </div>
@@ -619,7 +691,6 @@
                         <li><a href="/landing.html?mode=scan" class="hover:text-[#111] transition-colors">Scan your first item</a></li>
                         <li><a href="/flow-batch-upload.html" class="hover:text-[#111] transition-colors">Batch upload <span class="text-[10px] font-semibold text-amber-600 uppercase">Premium</span></a></li>
                         <li><a href="#pricing" onclick="handleNavigate(event, 'pricing')" class="hover:text-[#111] transition-colors">Pricing</a></li>
-                        <li><a href="#features" onclick="handleNavigate(event, 'features')" class="hover:text-[#111] transition-colors">Templates</a></li>
                     </ul>
                 </div>
                 <div>
@@ -642,9 +713,8 @@
                 <div>
                     <h4 class="text-xs font-semibold text-[#111] uppercase tracking-wider mb-4">Company</h4>
                     <ul class="space-y-3 text-sm text-[#555]">
-                        <li><a href="#" class="hover:text-[#111] transition-colors">About</a></li>
-                        <li><a href="#" class="hover:text-[#111] transition-colors">Careers</a></li>
-                        <li><a href="#" class="hover:text-[#111] transition-colors">Contact</a></li>
+                        <li><button onclick="openModal('about')" class="hover:text-[#111] transition-colors text-left">About</button></li>
+                        <li><button onclick="openModal('contact')" class="hover:text-[#111] transition-colors text-left">Contact</button></li>
                     </ul>
                 </div>
             </div>
@@ -660,22 +730,17 @@
     </div>
 
     <!-- Modals -->
-    <div id="modal-overlay" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 md:p-6">
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()"></div>
+    <div id="modal-overlay" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 md:p-6" aria-hidden="true" aria-modal="true" role="dialog">
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="closeModal()" aria-hidden="true"></div>
         <div class="relative w-full max-w-2xl max-h-[80vh] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col">
             <div class="p-6 border-b border-[#eaeaea] flex items-center justify-between bg-white sticky top-0 z-10">
                 <h3 id="modal-title" class="text-xl font-bold tracking-tight">Title</h3>
-                <button onclick="closeModal()" class="p-2 hover:bg-zinc-100 rounded-full transition-colors">
+                <button type="button" onclick="closeModal()" class="p-2 hover:bg-zinc-100 rounded-full transition-colors" aria-label="Close">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
-            <div id="modal-content" class="p-8 overflow-y-auto text-sm text-[#666] leading-relaxed space-y-6">
-                <!-- Content injected by JS -->
-            </div>
-            <div class="p-6 border-t border-[#eaeaea] bg-zinc-50 flex justify-end">
-                <button onclick="closeModal()" class="px-6 py-2 bg-black text-white rounded-lg font-medium hover:bg-zinc-900 transition-all">
-                    Close
-                </button>
+            <div id="modal-content" class="p-8 overflow-y-auto text-sm text-[#666] leading-relaxed space-y-6 flex-1 min-h-0">
+                <!-- Content injected by JS when user clicks Terms or Privacy -->
             </div>
         </div>
     </div>
@@ -711,12 +776,14 @@
         // Initialize Lucide icons
         lucide.createIcons();
 
-        // Mobile Menu Toggle
+        // Mobile Menu Toggle (removed on mobile; guard for missing elements)
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
-        menuToggle.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
 
         // Marquee Content (Shopify omitted; shown in hero; more integrations coming soon)
         const marketplaces = [
@@ -856,7 +923,9 @@
             const btn = document.createElement('button');
             btn.className = `vercel-card p-6 flex flex-col items-center justify-center text-center group transition-all ${c.status === 'Coming Soon' ? 'cursor-pointer hover:scale-[1.02]' : 'cursor-default'}`;
             btn.innerHTML = `
-                <img src="https://www.google.com/s2/favicons?domain=${c.icon}&sz=128" alt="${c.name}" class="w-10 h-10 mb-4 rounded-lg transition-all" referrerPolicy="no-referrer">
+                <span class="inline-block mb-4 ${c.status === 'Active' ? 'integration-icon-live' : ''}">
+                    <img src="https://www.google.com/s2/favicons?domain=${c.icon}&sz=128" alt="${c.name}" class="w-10 h-10 rounded-lg transition-all block" referrerPolicy="no-referrer">
+                </span>
                 <span class="text-sm font-bold mb-2">${c.name}</span>
                 <span class="text-[10px] font-bold px-2 py-0.5 rounded-full border ${c.status === 'Active' ? 'bg-emerald-50 text-emerald-600 border-emerald-100' : 'bg-zinc-50 text-zinc-500 border-zinc-100'}">
                     ${c.status}
@@ -881,7 +950,7 @@
             { q: "Can I edit the listing before it goes live on Shopify?", a: "Of course. Every scan creates a 'Draft' first. You can review, tweak the SEO title, adjust the price, or swap tags before hitting 'Publish' to sync it to your store." },
             { q: "How does it handle messy backgrounds or poor lighting?", a: "Our vision models are trained on real-world seller environments. While good lighting helps, the AI is excellent at isolating the product from busy backgrounds and correcting for minor lighting issues." },
             { q: "Which marketplaces are supported right now?", a: "We are currently active with Shopify, with integrations for Etsy, eBay, and TikTok Shop coming soon." },
-            { q: "Is there a limit to how many products I can scan?", a: "The Hobby plan includes 3 free scans per month. Pro users get unlimited scans, allowing high-volume sellers to list hundreds of items daily without friction." },
+            { q: "Is there a limit to how many products I can scan?", a: "The Hobby plan includes 3 free scans per month. Pro includes 250 scans per month; Enterprise includes 1,000 scans plus batch processing for high-volume sellers." },
             { q: "Is my store data and product imagery secure?", a: "Security is our priority. We use enterprise-grade encryption and never share your product data or images with third parties. Your data is used only to generate your specific listings." }
         ];
         const faqContainer = document.getElementById('faq-container');
@@ -960,24 +1029,66 @@
             </section>
         `;
 
+        const aboutContent = `
+            <section>
+                <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Who we are</h4>
+                <p>AuraLink AI is the platform for high-performance Shopify sellers. We turn product photos into SEO-ready listings in seconds, so you can list more and sell more.</p>
+            </section>
+            <section>
+                <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">What we do</h4>
+                <p>Our AI scans your product images, extracts titles, descriptions, attributes, and tags, and syncs draft listings to Shopify. You review and publish when you’re ready—no more manual data entry or copy-paste.</p>
+            </section>
+            <section>
+                <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Why AuraLink</h4>
+                <p>We combine computer vision, natural language, and direct Shopify integration so one photo becomes a full listing. Sellers get more time back, fewer errors, and listings that rank. We’re building the fastest path from photo to live product.</p>
+            </section>
+        `;
+
+        const contactContent = `
+            <section>
+                <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Get in touch</h4>
+                <p>We’d love to hear from you—whether you have a question, feedback, or want to talk about your store.</p>
+            </section>
+            <section>
+                <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Email</h4>
+                <p><a href="mailto:hello@auralink.ai" class="text-[#111] font-medium underline hover:no-underline">hello@auralink.ai</a></p>
+            </section>
+            <section>
+                <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Support</h4>
+                <p>For product support or billing questions, use the in-app help or email <a href="mailto:support@auralink.ai" class="text-[#111] font-medium underline hover:no-underline">support@auralink.ai</a>.</p>
+            </section>
+        `;
+
         function openModal(type) {
             if (type === 'privacy') {
                 modalTitle.innerText = 'Privacy Policy';
                 modalContent.innerHTML = privacyContent;
-            } else {
+            } else if (type === 'terms') {
                 modalTitle.innerText = 'Terms of Service';
                 modalContent.innerHTML = termsContent;
+            } else if (type === 'about') {
+                modalTitle.innerText = 'About';
+                modalContent.innerHTML = aboutContent;
+            } else if (type === 'contact') {
+                modalTitle.innerText = 'Contact';
+                modalContent.innerHTML = contactContent;
+            } else {
+                return;
             }
             modalOverlay.classList.remove('hidden');
-            modalOverlay.classList.add('flex');
+            modalOverlay.setAttribute('aria-hidden', 'false');
             document.body.style.overflow = 'hidden';
+            lucide.createIcons();
         }
 
         function closeModal() {
             modalOverlay.classList.add('hidden');
-            modalOverlay.classList.remove('flex');
+            modalOverlay.setAttribute('aria-hidden', 'true');
             document.body.style.overflow = 'auto';
         }
+
+        window.openModal = openModal;
+        window.closeModal = closeModal;
 
         // Scan mode: show scan view when ?mode=scan
         var urlParams = new URLSearchParams(window.location.search);
@@ -1336,6 +1447,25 @@
                 if (typeof lucide !== 'undefined') lucide.createIcons();
               })
               .catch(function() { saveDraftBtn.disabled = false; saveDraftBtn.innerHTML = 'Save as draft'; });
+          });
+
+          if (scanContinueSampleBtn) scanContinueSampleBtn.addEventListener('click', function() {
+            if (!lastExtractionData) return;
+            var data = lastExtractionData;
+            var att = data.attributes || {};
+            var suggestedPrice = 199;
+            if (att.price_value != null && typeof att.price_value === 'number' && att.price_value > 0) suggestedPrice = att.price_value;
+            else if (att.price_display && typeof att.price_display === 'string') { var match = att.price_display.replace(/[^\d.]/g, '').match(/[\d.]+/); if (match && parseFloat(match[0]) > 0) suggestedPrice = parseFloat(match[0]); }
+            var payload = { extraction: data, suggested_price: suggestedPrice };
+            if (capturedImg && capturedImg.src && capturedImg.src.startsWith('data:')) payload.imageDataUrl = capturedImg.src;
+            else if (lastCapturedBase64) payload.imageDataUrl = (lastCapturedBase64.indexOf('data:') === 0) ? lastCapturedBase64 : ('data:image/jpeg;base64,' + lastCapturedBase64);
+            try {
+              sessionStorage.removeItem('auralink_review_draft');
+              sessionStorage.setItem('auralink_draft_listing', JSON.stringify(payload));
+              window.location.href = '/flow-2.html';
+            } catch (e) {
+              if (e.name === 'QuotaExceededError') { delete payload.imageDataUrl; try { sessionStorage.setItem('auralink_draft_listing', JSON.stringify(payload)); window.location.href = '/flow-2.html'; } catch (e2) {} }
+            }
           });
 
           var scanViewBack = document.getElementById('scan-view-back');

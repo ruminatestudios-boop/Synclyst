@@ -120,9 +120,16 @@
         var raw = sessionStorage.getItem(PENDING_SCAN_KEY);
         if (raw) pending = JSON.parse(raw);
       } catch (e) {}
+      var draftOnly = false;
       if (!pending || !pending.base64) {
-        window.location.href = '/landing.html?mode=scan';
-        return;
+        try {
+          var draftRaw = sessionStorage.getItem(DRAFT_LISTING_KEY);
+          if (draftRaw && JSON.parse(draftRaw).extraction) draftOnly = true;
+        } catch (e) {}
+        if (!draftOnly) {
+          window.location.href = '/landing.html?mode=scan';
+          return;
+        }
       }
 
       var apiUrl = (document.querySelector('meta[name="auralink-api-url"]') && document.querySelector('meta[name="auralink-api-url"]').getAttribute('content')) || 'http://localhost:8000';
@@ -142,8 +149,16 @@
           stepIndex++;
         }
         if (t < 1) requestAnimationFrame(tick);
+        else if (draftOnly) {
+          extractionDone = true;
+          setPct(100);
+          for (var i = stepIndex; i < steps.length; i++) markStepDone(i);
+          setTimeout(redirectToFlow3, 500);
+        }
       }
       requestAnimationFrame(tick);
+
+      if (draftOnly) return;
 
       fetch(apiUrl + '/api/v1/vision/extract', {
         method: 'POST',

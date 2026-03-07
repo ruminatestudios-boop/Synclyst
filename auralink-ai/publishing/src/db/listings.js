@@ -1,5 +1,5 @@
 import { getSupabase } from './client.js';
-import { isDevMode, devGetListingById, devInsertListing, devUpdateListingStatus } from './devStore.js';
+import { isDevMode, devGetListingById, devGetListingsByUser, devInsertListing, devUpdateListingStatus } from './devStore.js';
 
 export async function getListingById(listingId) {
   if (isDevMode()) return devGetListingById(listingId);
@@ -8,6 +8,15 @@ export async function getListingById(listingId) {
   const { data, error } = await db.from('listings').select('*').eq('id', listingId).single();
   if (error || !data) return null;
   return data;
+}
+
+export async function getListingsByUserId(userId) {
+  if (isDevMode()) return devGetListingsByUser(userId);
+  const db = getSupabase();
+  if (!db) return [];
+  const { data, error } = await db.from('listings').select('id, user_id, universal_data, status, created_at').eq('user_id', userId).order('created_at', { ascending: false }).limit(100);
+  if (error) return [];
+  return data || [];
 }
 
 export async function insertListing(userId, universalData) {

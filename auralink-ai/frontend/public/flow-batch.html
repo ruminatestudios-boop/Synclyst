@@ -78,6 +78,17 @@
         return;
       }
 
+      var addMore = false;
+      var existingDrafts = [];
+      try {
+        addMore = sessionStorage.getItem('auralink_batch_add_more') === '1';
+        if (addMore) {
+          var existingRaw = sessionStorage.getItem(BATCH_DRAFTS_KEY);
+          if (existingRaw) existingDrafts = JSON.parse(existingRaw);
+          if (!Array.isArray(existingDrafts)) existingDrafts = [];
+        }
+      } catch (e) {}
+
       var grid = document.getElementById('batch-grid');
       var items = pending.map(function(p, i) {
         var card = document.createElement('div');
@@ -219,6 +230,10 @@
         var drafts = [];
         for (var i = 0; i < results.length; i++) {
           if (results[i] && results[i].draft) drafts.push(results[i].draft);
+        }
+        if (addMore && existingDrafts.length > 0) {
+          drafts = existingDrafts.concat(drafts);
+          try { sessionStorage.removeItem('auralink_batch_add_more'); } catch (e) {}
         }
         try {
           sessionStorage.removeItem(BATCH_PENDING_KEY);

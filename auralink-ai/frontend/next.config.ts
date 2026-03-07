@@ -3,8 +3,12 @@ import path from "path";
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  // So Next uses this app as root when multiple lockfiles exist (avoids 404 for /dashboard in dev)
   outputFileTracingRoot: path.join(__dirname),
+  async redirects() {
+    return [
+      { source: "/", destination: "/landing.html", permanent: false },
+    ];
+  },
 };
 
 export default nextConfig;

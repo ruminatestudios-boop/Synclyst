@@ -97,6 +97,27 @@ For the full listing flow (scan → review → **Publish to Shopify**), run **ba
 
 ---
 
+## 3b. Why do I see “Not connected” or can’t connect?
+
+The dashboard and scan flow call the **backend** at `http://localhost:8000`. If that request fails, you see **● Not connected**. Common causes:
+
+| Cause | What to do |
+|-------|------------|
+| **Backend not running** | Start it: `cd auralink-ai/backend && source .venv/bin/activate && uvicorn app.main:app --reload --host 0.0.0.0 --port 8000`. Then open http://localhost:8000/health — you should see `{"status":"ok",...}`. |
+| **Wrong API URL** | The frontend must use port **8000** for the main API. Run the frontend with `NEXT_PUBLIC_API_URL=http://localhost:8000 npm run dev` (from `auralink-ai/frontend`). Restart the dev server after changing this. |
+| **CORS blocking the request** | The backend only allows origins listed in `CORS_ORIGINS`. In **`auralink-ai/backend/.env`** either leave `CORS_ORIGINS` **empty** (allows all in dev) or set `CORS_ORIGINS=http://localhost:3000`. Restart the backend after changing `.env`. |
+| **Scan says “Couldn’t reach the server”** | Same as above: backend must be running on 8000 and CORS must allow your page’s origin (e.g. http://localhost:3000). |
+
+**Quick checks:**
+
+1. In the browser, open **http://localhost:8000/health**. If you get JSON with `"status":"ok"`, the backend is up.
+2. On the dashboard, the header shows **API: http://localhost:8000**. If it shows a different URL, the frontend was built or started with a different `NEXT_PUBLIC_API_URL`; restart the frontend with the correct env.
+3. Open DevTools (F12) → Network. Reload the page and look for a request to `http://localhost:8000/health`. If it’s red or blocked (CORS), fix backend CORS as above.
+
+**“Connect” as in Connect to Shopify?** If the problem is **connecting your store** (Log in to Shopify / Connect store), see **Section 5** below (Shopify app not configured) and **Section 6** (Shopify connect flow).
+
+---
+
 ## 4. Launch for real users (Android + iPhone) – camera must work
 
 The in-app **camera** only works for **all users** (including iPhone) when the app is served over **HTTPS**.

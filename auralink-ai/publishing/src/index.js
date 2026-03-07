@@ -30,6 +30,7 @@ app.get('/', (req, res) => {
       health: 'GET /health',
       enabledPlatforms: 'GET /api/listings/enabled-platforms',
       platformFields: 'GET /api/listings/platform-fields',
+      listListings: 'GET /api/listings (JWT)',
       createListing: 'POST /api/listings (body: universal_data)',
       publish: 'POST /api/listings/publish',
       connectedStores: 'GET /api/user/connected-stores',

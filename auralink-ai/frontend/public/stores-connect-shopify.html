@@ -141,7 +141,8 @@
       if (backLink) backLink.href = backHref;
 
       function getReturnToPath() {
-        if (returnTo === 'flow-marketplaces' || returnTo === 'flow-connect') return 'flow-connect-done.html';
+        if (returnTo === 'flow-marketplaces') return 'flow-3.html';
+        if (returnTo === 'flow-connect') return 'flow-connect-done.html';
         if (returnTo === 'flow-3') return 'flow-3.html';
         if (returnTo === 'flow-batch-review') return 'flow-batch-review.html';
         return '';

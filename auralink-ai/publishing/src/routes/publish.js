@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { authMiddleware } from '../middleware/auth.js';
 import { getValidToken } from '../auth/tokenManager.js';
-import { getListingById, insertListing, updateListingStatus, insertPublishResults, incrementUserListings, getUserTotalListings } from '../db/listings.js';
+import { getListingById, getListingsByUserId, insertListing, updateListingStatus, insertPublishResults, incrementUserListings, getUserTotalListings } from '../db/listings.js';
 import { publishToShopify, publishToTikTok, publishToEbay, publishToEtsy, publishToAmazon } from '../publish/publishers.js';
 import { validateListingForPlatform, getPlatformFieldsSummary } from '../config/platformFields.js';
 import { getEnabledPlatforms, isPlatformEnabled } from '../config/platforms.js';
@@ -16,6 +16,18 @@ publishRouter.get('/enabled-platforms', (_req, res) => {
 /** GET platform required/optional fields (for UI). No auth required. */
 publishRouter.get('/platform-fields', (_req, res) => {
   res.json(getPlatformFieldsSummary());
+});
+
+/** GET list current user's listings (newest first). Requires JWT. */
+publishRouter.get('/', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const listings = await getListingsByUserId(userId);
+    res.json({ listings });
+  } catch (e) {
+    console.error('List listings error', e);
+    res.status(500).json({ error: e.message || 'Server error' });
+  }
 });
 
 /** POST create a draft listing from universal_data. Requires JWT. */

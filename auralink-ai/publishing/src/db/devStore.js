@@ -37,6 +37,18 @@ export function devUpdateListingStatus(listingId, status, publishResults = null)
   }
 }
 
+/** List all listings for a user (newest first by id). */
+export function devGetListingsByUser(userId) {
+  const out = [];
+  for (const [id, row] of listings) {
+    if (row.user_id === userId) {
+      out.push({ id, user_id: row.user_id, universal_data: row.universal_data, status: row.status });
+    }
+  }
+  out.sort((a, b) => String(b.id).localeCompare(String(a.id), undefined, { numeric: true }));
+  return out;
+}
+
 // --- Tokens (used by tokens.js and auth when no Supabase)
 export function devUpsertToken(row) {
   const key = `${row.user_id}:${row.platform}`;

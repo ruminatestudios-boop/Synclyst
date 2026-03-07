@@ -27,6 +27,7 @@
     <main class="flex-1 px-5 pt-6 pb-6 overflow-auto">
       <h1 class="text-xl font-bold text-[#111] mb-1 text-center" style="letter-spacing: -0.025em;">Batch upload</h1>
       <p class="text-center text-sm text-[#555] mb-6">Upload multiple product photos. We extract details in parallel, then you review and publish.</p>
+      <p id="add-more-hint" class="hidden text-center text-sm text-emerald-700 font-medium mb-4 px-3 py-2 rounded-lg bg-emerald-50 border border-emerald-200">Adding to your existing batch — new listings will be merged. Review and deploy all in one go.</p>
 
       <div class="space-y-5">
         <div class="vercel-card p-5">
@@ -42,7 +43,7 @@
               Start batch
             </button>
           </div>
-          <p class="text-[10px] font-semibold uppercase tracking-wider text-amber-600 mt-2">Premium</p>
+          <p class="text-[10px] font-semibold uppercase tracking-wider text-amber-600 mt-2 text-center">Premium</p>
         </div>
       </div>
     </main>
@@ -52,6 +53,10 @@
       var BATCH_PENDING_KEY = 'auralink_batch_pending';
       var MAX_IMAGES = 20;
       var MAX_PX = 720;
+      var addMoreHint = document.getElementById('add-more-hint');
+      if ((window.location.search || '').indexOf('add=1') !== -1 && addMoreHint) {
+        addMoreHint.classList.remove('hidden');
+      }
       var input = document.getElementById('batch-file-input');
       var uploadBtn = document.getElementById('batch-upload-btn');
       var countEl = document.getElementById('batch-file-count');
@@ -125,6 +130,10 @@
         if (pendingImages.length === 0) {
           alert('Choose photos first.');
           return;
+        }
+        var addMore = (window.location.search || '').indexOf('add=1') !== -1;
+        if (addMore) {
+          try { sessionStorage.setItem('auralink_batch_add_more', '1'); } catch (e) {}
         }
         window.location.href = '/flow-batch.html';
       });
