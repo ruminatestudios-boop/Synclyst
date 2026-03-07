@@ -621,15 +621,14 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
+  <script src="config.js"></script>
   <script>
     lucide.createIcons();
   </script>
   <script>
-    // API config: GEMINI_API_KEY = AI doc classification (https://aistudio.google.com/apikey). GOOGLE_VISION_API_KEY = OCR (enable Vision API at https://console.cloud.google.com/apis/library/vision.googleapis.com).
-    window.AUTOENTRY_CONFIG = {
-      GEMINI_API_KEY: 'AIzaSyA3JP3KL-O9Zi1DkS-f0ukaywThATeDwEo',
-      GOOGLE_VISION_API_KEY: ''
-    };
+    // API base: '' when site is served from same server as API (e.g. node api/server.js). Set API_BASE in config.js if frontend is elsewhere (e.g. file:// or different host).
+    window.AUTOENTRY_CONFIG = window.AUTOENTRY_CONFIG || {};
+    window.API_BASE = (window.AUTOENTRY_CONFIG && window.AUTOENTRY_CONFIG.API_BASE) || '';
 
     document.addEventListener('DOMContentLoaded', function() {
       document.querySelectorAll('.hero-line').forEach(function(el) { el.classList.add('animate'); });
@@ -940,60 +939,59 @@
         var lastExtractedText = '';
 
         function extractTextFromImage(dataUrl) {
-          var visionKey = (window.AUTOENTRY_CONFIG && window.AUTOENTRY_CONFIG.GOOGLE_VISION_API_KEY) || '';
-          if (visionKey) {
-            var base64 = (dataUrl || '').replace(/^data:image\/\w+;base64,/, '');
-            return fetch('https://vision.googleapis.com/v1/images:annotate?key=' + encodeURIComponent(visionKey), {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                requests: [{ image: { content: base64 }, features: [{ type: 'DOCUMENT_TEXT_DETECTION' }] }]
-              })
-            }).then(function(r) { return r.json(); }).then(function(data) {
-              var res = data.responses && data.responses[0];
-              if (res && res.fullTextAnnotation && res.fullTextAnnotation.text) return res.fullTextAnnotation.text.trim();
-              if (res && res.error) throw new Error(res.error.message || 'Vision API error');
-              return '';
-            });
-          }
-          return Tesseract.recognize(dataUrl, 'eng', { logger: function() {} }).then(function(result) { return (result.data.text || '').trim(); });
+          var base64 = (dataUrl || '').replace(/^data:image\/\w+;base64,/, '');
+          var apiBase = window.API_BASE || '';
+          return fetch(apiBase + '/api/vision/annotate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              requests: [{ image: { content: base64 }, features: [{ type: 'DOCUMENT_TEXT_DETECTION' }] }]
+            })
+          }).then(function(r) { return r.json(); }).then(function(data) {
+            var res = data.responses && data.responses[0];
+            if (res && res.fullTextAnnotation && res.fullTextAnnotation.text) return res.fullTextAnnotation.text.trim();
+            if (res && res.error) throw new Error(res.error.message || 'Vision API error');
+            if (data.error && data.error.message) throw new Error(data.error.message);
+            return '';
+          }).catch(function() {
+            return Tesseract.recognize(dataUrl, 'eng', { logger: function() {} }).then(function(result) { return (result.data.text || '').trim(); });
+          });
         }
 
         function classifyDocument(ocrText) {
-          var key = (window.AUTOENTRY_CONFIG && window.AUTOENTRY_CONFIG.GEMINI_API_KEY) || '';
           var text = (ocrText || '').trim().slice(0, 8000);
           if (!text) return Promise.resolve({ documentType: 'document', suggestedApps: [{ name: 'Google Docs', reason: 'Save this as a document' }] });
 
-          if (key) {
-            var prompt = 'Analyze this extracted document text and respond with ONLY a valid JSON object (no markdown, no code block), no other text. Use this exact shape: {"documentType":"invoice"|"receipt"|"business_card"|"form"|"other","suggestedApps":[{"name":"App Name","reason":"short reason"}]}. Suggest 2-4 apps that fit the document type (e.g. invoice -> QuickBooks, Xero; receipt -> Expensify; always include Google Docs as one option for saving content). Document text:\n\n' + text;
-            return fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + encodeURIComponent(key), {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.2, maxOutputTokens: 512 } })
-            }).then(function(r) { return r.json(); }).then(function(data) {
-              var out = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) ? data.candidates[0].content.parts[0].text : '';
-              var parsed = null;
-              try {
-                parsed = JSON.parse(out.replace(/^[\s\S]*?(\{[\s\S]*\})[\s\S]*$/, '$1'));
-              } catch (e) {}
-              if (parsed && parsed.suggestedApps && Array.isArray(parsed.suggestedApps)) return parsed;
-              return null;
-            }).catch(function() { return null; });
-          }
+          var apiBase = window.API_BASE || '';
+          var prompt = 'Analyze this extracted document text and respond with ONLY a valid JSON object (no markdown, no code block), no other text. Use this exact shape: {"documentType":"invoice"|"receipt"|"business_card"|"form"|"other","suggestedApps":[{"name":"App Name","reason":"short reason"}]}. Suggest 2-4 apps that fit the document type (e.g. invoice -> QuickBooks, Xero; receipt -> Expensify; always include Google Docs as one option for saving content). Document text:\n\n' + text;
+          return fetch(apiBase + '/api/gemini/generate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }], generationConfig: { temperature: 0.2, maxOutputTokens: 512 } })
+          }).then(function(r) { return r.json(); }).then(function(data) {
+            var out = (data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0]) ? data.candidates[0].content.parts[0].text : '';
+            var parsed = null;
+            try {
+              parsed = JSON.parse(out.replace(/^[\s\S]*?(\{[\s\S]*\})[\s\S]*$/, '$1'));
+            } catch (e) {}
+            if (parsed && parsed.suggestedApps && Array.isArray(parsed.suggestedApps)) return parsed;
+            return null;
+          }).catch(function() { return null; }).then(function(parsed) {
+            if (parsed && parsed.suggestedApps) return parsed;
+            var lower = text.toLowerCase();
+            var documentType = 'document';
+            if (/\binvoice\b|inv\.? no|bill to|amount due|subtotal|tax\s*%|vat\s*number/i.test(lower)) documentType = 'invoice';
+            else if (/\breceipt\b|total\s+paid|change\s+due|register\s+#|pos\s+/i.test(lower) || /\d{1,2}\/\d{1,2}\/\d{2,4}\s+\d+\.\d{2}/.test(lower)) documentType = 'receipt';
+            else if (/\bemail\b.*@|phone\s*:|mobile\s*:|company\s*:|title\s*:/i.test(lower) && text.length < 1500) documentType = 'business_card';
+            else if (/\bform\b|checkbox|signature\s*line|date\s*:\s*\_+/i.test(lower)) documentType = 'form';
 
-          var lower = text.toLowerCase();
-          var documentType = 'document';
-          if (/\binvoice\b|inv\.? no|bill to|amount due|subtotal|tax\s*%|vat\s*number/i.test(lower)) documentType = 'invoice';
-          else if (/\breceipt\b|total\s+paid|change\s+due|register\s+#|pos\s+/i.test(lower) || /\d{1,2}\/\d{1,2}\/\d{2,4}\s+\d+\.\d{2}/.test(lower)) documentType = 'receipt';
-          else if (/\bemail\b.*@|phone\s*:|mobile\s*:|company\s*:|title\s*:/i.test(lower) && text.length < 1500) documentType = 'business_card';
-          else if (/\bform\b|checkbox|signature\s*line|date\s*:\s*\_+/i.test(lower)) documentType = 'form';
-
-          var suggestedApps = [];
-          if (documentType === 'invoice') suggestedApps = [{ name: 'QuickBooks', reason: 'Import invoices and track payments' }, { name: 'Xero', reason: 'Sync invoices to accounting' }, { name: 'Google Docs', reason: 'Save as a document' }];
-          else if (documentType === 'receipt') suggestedApps = [{ name: 'Expensify', reason: 'Expense reports from receipts' }, { name: 'QuickBooks', reason: 'Track expenses' }, { name: 'Google Docs', reason: 'Save as a document' }];
-          else if (documentType === 'business_card') suggestedApps = [{ name: 'Google Contacts', reason: 'Add to contacts' }, { name: 'Salesforce', reason: 'Add lead' }, { name: 'Google Docs', reason: 'Save details' }];
-          else suggestedApps = [{ name: 'Google Docs', reason: 'Save and edit this content' }, { name: 'Notion', reason: 'Add to your workspace' }];
-          return Promise.resolve({ documentType: documentType, suggestedApps: suggestedApps });
+            var suggestedApps = [];
+            if (documentType === 'invoice') suggestedApps = [{ name: 'QuickBooks', reason: 'Import invoices and track payments' }, { name: 'Xero', reason: 'Sync invoices to accounting' }, { name: 'Google Docs', reason: 'Save as a document' }];
+            else if (documentType === 'receipt') suggestedApps = [{ name: 'Expensify', reason: 'Expense reports from receipts' }, { name: 'QuickBooks', reason: 'Track expenses' }, { name: 'Google Docs', reason: 'Save as a document' }];
+            else if (documentType === 'business_card') suggestedApps = [{ name: 'Google Contacts', reason: 'Add to contacts' }, { name: 'Salesforce', reason: 'Add lead' }, { name: 'Google Docs', reason: 'Save details' }];
+            else suggestedApps = [{ name: 'Google Docs', reason: 'Save and edit this content' }, { name: 'Notion', reason: 'Add to your workspace' }];
+            return { documentType: documentType, suggestedApps: suggestedApps };
+          });
         }
 
         function renderSuggestedApps(suggestedApps, extractedText) {

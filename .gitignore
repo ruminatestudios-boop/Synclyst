@@ -3,6 +3,9 @@ node_modules
 .venv
 .env
 .env.*
+!.env.example
+!api/.env.example
+config.js
 *.sqlite
 *.sqlite-journal
 *.mp4
