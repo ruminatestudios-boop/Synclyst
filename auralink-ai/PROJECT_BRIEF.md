@@ -1,4 +1,4 @@
-# AuraLink AI – Project Brief Mapping
+# SyncLyst – Project Brief Mapping
 
 This document maps the Gemini-provided brief to the implemented codebase.
 

@@ -36,11 +36,24 @@ const enabled = getEnabledPlatforms();
 if (enabled.includes('shopify')) {
   const { getShopifyAuthUrl, handleShopifyCallback } = await import('../auth/shopify.js');
   authRouter.get('/shopify', requireUser, (req, res) => {
-    const shop = req.query.shop || '';
-    if (!shop) return res.status(400).json({ error: 'Query "shop" required (e.g. mystore.myshopify.com)' });
+    const shop = (req.query.shop || '').trim().toLowerCase();
     const returnTo = req.query.return_to || req.query.returnTo || '';
-    const state = JSON.stringify({ userId: req.userId, shop, returnTo });
-    res.redirect(getShopifyAuthUrl(state));
+    const base = FRONTEND_URL.replace(/\/$/, '');
+    const connectPage = '/stores-connect-shopify.html';
+    const returnQ = returnTo ? `&return=${encodeURIComponent(returnTo)}` : '';
+
+    if (!shop) {
+      return res.redirect(`${base}${connectPage}?error=${encodeURIComponent('Enter your store name (e.g. your-store)')}${returnQ}`);
+    }
+    if (shop === 'admin' || shop === 'admin.myshopify.com' || /\/|\\\\/.test(req.query.shop || '')) {
+      return res.redirect(`${base}${connectPage}?error=${encodeURIComponent('Use your store name only (e.g. your-store), not "admin" or a URL path.')}${returnQ}`);
+    }
+    const stateStr = JSON.stringify({ userId: req.userId, shop, returnTo });
+    const authUrl = getShopifyAuthUrl(shop, stateStr);
+    if (!authUrl || authUrl.includes('client_id=undefined') || !authUrl.includes('.myshopify.com')) {
+      return res.redirect(`${base}${connectPage}?error=${encodeURIComponent('Shopify app not configured. Set SHOPIFY_API_KEY and SHOPIFY_API_SECRET in auralink-ai/publishing/.env and restart the publishing service.')}${returnQ}`);
+    }
+    res.redirect(authUrl);
   });
   authRouter.get('/shopify/callback', async (req, res) => {
     try {

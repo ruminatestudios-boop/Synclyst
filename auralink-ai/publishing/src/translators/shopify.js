@@ -176,7 +176,6 @@ function buildOptionsAndVariants(listing) {
 
   const sku =
     listing.sku?.trim() || generateSku(listing);
-  const weightGrams = (listing.weight_kg != null && listing.weight_kg > 0) ? listing.weight_kg * 1000 : 500;
   return {
     options: [],
     variants: [

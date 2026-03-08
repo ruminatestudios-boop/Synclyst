@@ -33,7 +33,7 @@ export default function Custom404() {
           fontWeight: 600,
         }}
       >
-        ← Back to AuraLink AI
+        ← Back to SyncLyst
       </a>
     </div>
   );

@@ -1,4 +1,4 @@
-# AuraLink AI – What’s Implemented, What’s Left, How to Test
+# SyncLyst – What’s Implemented, What’s Left, How to Test
 
 ## Dummy run (no connections)
 

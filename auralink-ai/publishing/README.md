@@ -1,4 +1,4 @@
-# AuraLink Publishing API
+# SyncLyst Publishing API
 
 Multi-platform listing publish service. One POST with a universal listing → publish to Shopify, TikTok Shop, eBay, Etsy, Amazon (and copy-paste export for Depop/Vinted).
 
@@ -9,7 +9,7 @@ Multi-platform listing publish service. One POST with a universal listing → pu
 - **Runtime:** Node.js (ES modules)
 - **Backend:** Express
 - **Database:** PostgreSQL via Supabase
-- **Auth:** JWT (AuraLink users) + OAuth 2.0 per platform
+- **Auth:** JWT (SyncLyst users) + OAuth 2.0 per platform
 - **Token storage:** Encrypted in `platform_tokens` (AES-256-GCM via `TOKEN_ENCRYPTION_KEY`)
 
 ## Quick start
@@ -43,7 +43,7 @@ Multi-platform listing publish service. One POST with a universal listing → pu
 | `PORT` | Server port (default 8001) |
 | `APP_URL` | Full URL of this API (for OAuth redirects) |
 | `FRONTEND_URL` | Where to redirect after OAuth (e.g. dashboard) |
-| `JWT_SECRET` | Secret to verify AuraLink user JWTs |
+| `JWT_SECRET` | Secret to verify SyncLyst user JWTs |
 | `SUPABASE_URL` | Supabase project URL |
 | `SUPABASE_SERVICE_KEY` | Supabase service role key |
 | `TOKEN_ENCRYPTION_KEY` | At least 32 characters; used to encrypt access/refresh tokens at rest |

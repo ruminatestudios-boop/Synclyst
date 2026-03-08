@@ -37,7 +37,7 @@ function Error({ statusCode }) {
           fontWeight: 600,
         }}
       >
-        ← Back to AuraLink AI
+        ← Back to SyncLyst
       </a>
     </div>
   );

@@ -1,6 +1,6 @@
 # Go-live checklist (easiest → hardest)
 
-Use this list to take AuraLink from test mode to live for real users. Tick each when done and go in order where possible.
+Use this list to take SyncLyst from test mode to live for real users. Tick each when done and go in order where possible.
 
 ---
 
@@ -39,7 +39,7 @@ Use this list to take AuraLink from test mode to live for real users. Tick each 
 
 ## 3. Add custom domain on Vercel (easy)
 
-**What:** Serve the app at your own domain (e.g. `app.auralink.ai`).
+**What:** Serve the app at your own domain (e.g. app.synclyst.app).
 
 **Do:**
 1. In Vercel project → **Settings → Domains** → Add your domain.

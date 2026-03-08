@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Privacy Policy – AuraLink AI",
-  description: "Privacy Policy for AuraLink AI. How we collect, use, and protect your information.",
+  title: "Privacy Policy – SyncLyst",
+  description: "Privacy Policy for SyncLyst. How we collect, use, and protect your information.",
 };
 
 export default function PrivacyPage() {
@@ -11,7 +11,7 @@ export default function PrivacyPage() {
       <header className="border-b border-zinc-200 bg-white">
         <div className="max-w-3xl mx-auto px-4 py-4">
           <Link href="/landing.html" className="font-bold text-zinc-900 hover:text-zinc-600">
-            AuraLink AI
+            SyncLyst
           </Link>
         </div>
       </header>
@@ -23,7 +23,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-lg font-semibold text-zinc-900 mb-3">1. Introduction</h2>
             <p className="mb-3">
-              AuraLink AI (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates the AuraLink AI service and related websites and applications. Our service provides a product-photo-to-listing tool that uses artificial intelligence to extract product data from images and to generate and synchronize listings across e-commerce and marketplace platforms (including but not limited to Shopify, Amazon, eBay, Etsy, and other supported connectors).
+              SyncLyst (&quot;we,&quot; &quot;our,&quot; or &quot;us&quot;) operates the SyncLyst service and related websites and applications. Our service provides a product-photo-to-listing tool that uses artificial intelligence to extract product data from images and to generate and synchronize listings across e-commerce and marketplace platforms (including but not limited to Shopify, Amazon, eBay, Etsy, and other supported connectors).
             </p>
             <p>
               This Privacy Policy describes how we collect, use, disclose, and protect your information when you access or use our website, applications, application programming interfaces (APIs), and any related services (collectively, the &quot;Service&quot;). It also describes your choices and rights regarding your personal data. Please read this policy carefully. By using the Service, you acknowledge that you have read and understood this Privacy Policy. If you do not agree with this policy, you must not use the Service.
@@ -124,14 +124,14 @@ export default function PrivacyPage() {
               <li><strong className="text-zinc-900">Opt-out of marketing:</strong> Unsubscribe from marketing emails via the link in any such email</li>
             </ul>
             <p className="mb-3">
-              To exercise these rights, contact us at <a href="mailto:hello@auralink.ai" className="text-zinc-900 font-medium underline hover:text-zinc-600">hello@auralink.ai</a>. We will respond within the timeframes required by applicable law. You may also have the right to lodge a complaint with a supervisory authority in your jurisdiction. For residents of the European Economic Area (EEA), United Kingdom, or Switzerland, our processing may be subject to the GDPR or equivalent laws. For California residents, we comply with the CCPA/CPRA as applicable.
+              To exercise these rights, contact us at <a href="mailto:hello@synclyst.app" className="text-zinc-900 font-medium underline hover:text-zinc-600">hello@synclyst.app</a>. We will respond within the timeframes required by applicable law. You may also have the right to lodge a complaint with a supervisory authority in your jurisdiction. For residents of the European Economic Area (EEA), United Kingdom, or Switzerland, our processing may be subject to the GDPR or equivalent laws. For California residents, we comply with the CCPA/CPRA as applicable.
             </p>
           </section>
 
           <section>
             <h2 className="text-lg font-semibold text-zinc-900 mb-3">8. Children&apos;s Privacy</h2>
             <p>
-              The Service is not directed to individuals under the age of 16 (or higher where required by local law). We do not knowingly collect personal information from children. If you believe we have collected information from a child, please contact us at <a href="mailto:hello@auralink.ai" className="text-zinc-900 font-medium underline hover:text-zinc-600">hello@auralink.ai</a>, and we will take steps to delete it.
+              The Service is not directed to individuals under the age of 16 (or higher where required by local law). We do not knowingly collect personal information from children. If you believe we have collected information from a child, please contact us at <a href="mailto:hello@synclyst.app" className="text-zinc-900 font-medium underline hover:text-zinc-600">hello@synclyst.app</a>, and we will take steps to delete it.
             </p>
           </section>
 
@@ -152,7 +152,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-lg font-semibold text-zinc-900 mb-3">11. Contact Us</h2>
             <p>
-              For privacy-related questions, requests, or complaints, contact us at <a href="mailto:hello@auralink.ai" className="text-zinc-900 font-medium underline hover:text-zinc-600">hello@auralink.ai</a>. You may also write to us at the address provided on our website or in the Service. We will work with you to resolve any concerns.
+              For privacy-related questions, requests, or complaints, contact us at <a href="mailto:hello@synclyst.app" className="text-zinc-900 font-medium underline hover:text-zinc-600">hello@synclyst.app</a>. You may also write to us at the address provided on our website or in the Service. We will work with you to resolve any concerns.
             </p>
           </section>
         </div>

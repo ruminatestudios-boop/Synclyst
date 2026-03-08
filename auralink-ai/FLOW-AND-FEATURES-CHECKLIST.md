@@ -1,4 +1,4 @@
-# AuraLink flow & features checklist
+# SyncLyst flow & features checklist
 
 Use this to see **what’s working**, **what’s not**, and what to fix or implement, ordered from **easiest to hardest**.
 

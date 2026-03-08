@@ -7,7 +7,7 @@ export default function UpgradePage() {
     <div style={{ minHeight: "100vh", background: "var(--bg)" }}>
       <header className="glass-nav" style={{ padding: "1rem 2rem", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <Link href="/" style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--text)" }}>
-          AuraLink AI
+          SyncLyst
         </Link>
         <Link href="/dashboard" style={{ fontSize: "0.875rem", fontWeight: 500, color: "var(--muted)" }}>
           ← Dashboard

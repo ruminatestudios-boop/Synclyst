@@ -1,8 +1,8 @@
 import Link from "next/link";
 
 export const metadata = {
-  title: "Terms of Service – AuraLink AI",
-  description: "Terms of Service for AuraLink AI. Rules and conditions for using our product-photo-to-listing service.",
+  title: "Terms of Service – SyncLyst",
+  description: "Terms of Service for SyncLyst. Rules and conditions for using our product-photo-to-listing service.",
 };
 
 export default function TermsPage() {
@@ -11,7 +11,7 @@ export default function TermsPage() {
       <header className="border-b border-zinc-200 bg-white">
         <div className="max-w-3xl mx-auto px-4 py-4">
           <Link href="/landing.html" className="font-bold text-zinc-900 hover:text-zinc-600">
-            AuraLink AI
+            SyncLyst
           </Link>
         </div>
       </header>
@@ -23,7 +23,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-zinc-900 mb-3">1. Acceptance of Terms</h2>
             <p className="mb-3">
-              These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;you,&quot; &quot;your,&quot; or &quot;User&quot;) and AuraLink AI (&quot;we,&quot; &quot;our,&quot; or &quot;AuraLink AI&quot;) governing your access to and use of the AuraLink AI website, applications, APIs, and all related services, features, and content (collectively, the &quot;Service&quot;).
+              These Terms of Service (&quot;Terms&quot;) constitute a legally binding agreement between you (&quot;you,&quot; &quot;your,&quot; or &quot;User&quot;) and SyncLyst (&quot;we,&quot; &quot;our,&quot; or &quot;SyncLyst&quot;) governing your access to and use of the SyncLyst website, applications, APIs, and all related services, features, and content (collectively, the &quot;Service&quot;).
             </p>
             <p className="mb-3">
               By creating an account, accessing, or using the Service, you agree to be bound by these Terms and by our Privacy Policy, which is incorporated by reference. If you are using the Service on behalf of an organization, you represent that you have the authority to bind that organization to these Terms. If you do not agree to these Terms or the Privacy Policy, you must not access or use the Service.
@@ -36,7 +36,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-zinc-900 mb-3">2. Description of the Service</h2>
             <p className="mb-3">
-              AuraLink AI provides a product-photo-to-listing platform that uses artificial intelligence to extract product attributes from images (including titles, descriptions, bullets, materials, brands, categories, and tags) and to generate, manage, and synchronize listing content across e-commerce and marketplace platforms.
+              SyncLyst provides a product-photo-to-listing platform that uses artificial intelligence to extract product attributes from images (including titles, descriptions, bullets, materials, brands, categories, and tags) and to generate, manage, and synchronize listing content across e-commerce and marketplace platforms.
             </p>
             <p className="mb-3">The Service may include, without limitation:</p>
             <ul className="list-disc list-inside space-y-1 ml-2 mb-3">
@@ -91,10 +91,10 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-zinc-900 mb-3">6. Intellectual Property</h2>
             <p className="mb-3">
-              The Service, including its software, design, text, graphics, logos, and other materials (excluding User Content), is owned by AuraLink AI or its licensors and is protected by copyright, trademark, and other intellectual property laws. You may not copy, modify, distribute, or create derivative works of the Service or any part thereof without our prior written consent.
+              The Service, including its software, design, text, graphics, logos, and other materials (excluding User Content), is owned by SyncLyst or its licensors and is protected by copyright, trademark, and other intellectual property laws. You may not copy, modify, distribute, or create derivative works of the Service or any part thereof without our prior written consent.
             </p>
             <p className="mb-3">
-              You retain ownership of the content you upload or create (&quot;User Content&quot;), including product images and listing text. By using the Service, you grant AuraLink AI a worldwide, non-exclusive, royalty-free license to use, store, process, reproduce, and display your User Content solely as necessary to provide, operate, and improve the Service (including AI processing, storage, and sync to connected marketplaces). This license survives until you delete the content or close your account, except where we need to retain copies for legal or operational purposes.
+              You retain ownership of the content you upload or create (&quot;User Content&quot;), including product images and listing text. By using the Service, you grant SyncLyst a worldwide, non-exclusive, royalty-free license to use, store, process, reproduce, and display your User Content solely as necessary to provide, operate, and improve the Service (including AI processing, storage, and sync to connected marketplaces). This license survives until you delete the content or close your account, except where we need to retain copies for legal or operational purposes.
             </p>
           </section>
 
@@ -128,7 +128,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-zinc-900 mb-3">10. Indemnification</h2>
             <p>
-              You agree to indemnify, defend, and hold harmless AuraLink AI and its affiliates, officers, directors, employees, agents, and licensors from and against any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys&apos; fees) arising out of or related to (a) your use of the Service, (b) your User Content, (c) your violation of these Terms or any applicable law, or (d) your violation of any third party&apos;s rights. We reserve the right to assume the exclusive defense and control of any matter subject to indemnification by you, at your expense.
+              You agree to indemnify, defend, and hold harmless SyncLyst and its affiliates, officers, directors, employees, agents, and licensors from and against any and all claims, damages, losses, liabilities, costs, and expenses (including reasonable attorneys&apos; fees) arising out of or related to (a) your use of the Service, (b) your User Content, (c) your violation of these Terms or any applicable law, or (d) your violation of any third party&apos;s rights. We reserve the right to assume the exclusive defense and control of any matter subject to indemnification by you, at your expense.
             </p>
           </section>
 
@@ -148,7 +148,7 @@ export default function TermsPage() {
               <strong className="text-zinc-900">Governing law:</strong> These Terms are governed by the laws of the State of Delaware, United States, without regard to conflict of law principles. Any dispute arising out of or related to these Terms or the Service shall be resolved exclusively in the state or federal courts located in Delaware, and you consent to personal jurisdiction therein.
             </p>
             <p className="mb-3">
-              <strong className="text-zinc-900">Entire agreement:</strong> These Terms, together with the Privacy Policy and any order forms or plan-specific terms, constitute the entire agreement between you and AuraLink AI regarding the Service and supersede any prior agreements.
+              <strong className="text-zinc-900">Entire agreement:</strong> These Terms, together with the Privacy Policy and any order forms or plan-specific terms, constitute the entire agreement between you and SyncLyst regarding the Service and supersede any prior agreements.
             </p>
             <p className="mb-3">
               <strong className="text-zinc-900">Severability:</strong> If any provision of these Terms is held to be invalid or unenforceable, the remaining provisions will remain in full force and effect.
@@ -164,7 +164,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-zinc-900 mb-3">13. Contact Us</h2>
             <p>
-              For questions about these Terms of Service, please contact us at <a href="mailto:hello@auralink.ai" className="text-zinc-900 font-medium underline hover:text-zinc-600">hello@auralink.ai</a>. You may also use the contact information provided on our website or in the Service. We will respond to legitimate inquiries as promptly as practicable.
+              For questions about these Terms of Service, please contact us at <a href="mailto:hello@synclyst.app" className="text-zinc-900 font-medium underline hover:text-zinc-600">hello@synclyst.app</a>. You may also use the contact information provided on our website or in the Service. We will respond to legitimate inquiries as promptly as practicable.
             </p>
           </section>
         </div>

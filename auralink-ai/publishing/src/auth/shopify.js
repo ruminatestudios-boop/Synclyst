@@ -10,11 +10,29 @@ function getRedirectUri() {
   return `${APP_URL}/auth/shopify/callback`;
 }
 
-export function getShopifyAuthUrl(state) {
-  const shop = state?.shop || '';
+/** Build Shopify OAuth authorize URL. Accepts (shop, stateStr) or legacy (stateJsonString). */
+export function getShopifyAuthUrl(shopOrState, stateStr) {
   const scopes = 'write_products,read_products,write_inventory';
-  const stateStr = typeof state === 'string' ? state : JSON.stringify(state || {});
-  return `https://${shop}/admin/oauth/authorize?client_id=${SHOPIFY_API_KEY}&scope=${scopes}&redirect_uri=${encodeURIComponent(getRedirectUri())}&state=${encodeURIComponent(stateStr)}`;
+  let shop = '';
+  let stateStrOut = stateStr;
+  if (typeof shopOrState === 'string' && shopOrState.trim() !== '') {
+    const trimmed = shopOrState.trim();
+    if (trimmed.startsWith('{')) {
+      try {
+        const parsed = JSON.parse(trimmed);
+        if (parsed && typeof parsed.shop === 'string' && parsed.shop.trim()) {
+          shop = parsed.shop.trim().toLowerCase();
+          stateStrOut = stateStrOut || trimmed;
+        }
+      } catch (_) {}
+    }
+    if (!shop) shop = trimmed.toLowerCase();
+  }
+  if (!shop) return null;
+  const shopNorm = shop.replace(/\.myshopify\.com$/i, '') + '.myshopify.com';
+  if (!/\.myshopify\.com$/i.test(shopNorm) || shopNorm.length < 10) return null;
+  if (!SHOPIFY_API_KEY || !SHOPIFY_API_SECRET) return null;
+  return `https://${shopNorm}/admin/oauth/authorize?client_id=${SHOPIFY_API_KEY}&scope=${scopes}&redirect_uri=${encodeURIComponent(getRedirectUri())}&state=${encodeURIComponent(stateStrOut || '{}')}`;
 }
 
 export async function handleShopifyCallback(code, shop, stateStr) {

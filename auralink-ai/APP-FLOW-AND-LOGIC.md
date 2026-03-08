@@ -1,4 +1,4 @@
-# AuraLink – App flow & logic
+# SyncLyst – App flow & logic
 
 User journey and application logic only (no deployment steps). Use this to see **what the app does** and **how the flow works**.
 

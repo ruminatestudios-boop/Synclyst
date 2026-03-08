@@ -1,4 +1,4 @@
-# AuraLink AI
+# SyncLyst
 
 **Multimodal Product Onboarding Engine** — headless SaaS that turns a single product photo into a complete, structured listing and syncs to Shopify, Amazon, TikTok Shop, and Depop/eBay.
 

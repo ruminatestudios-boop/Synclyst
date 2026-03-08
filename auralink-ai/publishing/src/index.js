@@ -1,7 +1,8 @@
 /**
- * AuraLink Publishing API — Express app
+ * SyncLyst Publishing API — Express app
  * OAuth, token refresh, universal → platform translation, publish orchestration.
  */
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { authRouter } from './routes/auth.js';
@@ -24,7 +25,7 @@ app.use('/api/listings', exportRouter);
 
 app.get('/', (req, res) => {
   res.json({
-    service: 'auralink-publishing-api',
+    service: 'synclyst-publishing-api',
     message: 'Publishing API is running. Use these endpoints:',
     endpoints: {
       health: 'GET /health',
@@ -40,7 +41,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', service: 'auralink-publishing-api' });
+  res.json({ status: 'ok', service: 'synclyst-publishing-api' });
 });
 
 const PORT = process.env.PORT || 8001;

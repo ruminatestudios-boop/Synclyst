@@ -1,5 +1,5 @@
 """
-AuraLink AI – VLM Prompt Template for Agentic Commerce.
+SyncLyst – VLM Prompt Template for Agentic Commerce.
 
 - Structured extraction: brand, exact_model, material_composition, weight_grams, dimensions, condition_score.
 - Universal Commerce Protocol (UCP) + schema.org/Product aligned.

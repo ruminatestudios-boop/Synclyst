@@ -1,4 +1,4 @@
-# Try AuraLink on your phone
+# Try SyncLyst on your phone
 
 Use the same Wi‑Fi as your computer and your phone’s browser. The app will use your computer’s IP so the phone can reach the frontend, backend, and publishing API. **Payment/checkout is not required for testing.**
 

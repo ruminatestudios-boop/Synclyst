@@ -1,5 +1,5 @@
 """
-AuraLink AI - FastAPI backend.
+SyncLyst - FastAPI backend.
 API-first, headless product onboarding from images.
 """
 from contextlib import asynccontextmanager
@@ -64,6 +64,6 @@ def health():
     shopify_configured = bool(s.shopify_client_id and s.shopify_client_secret)
     return {
         "status": "ok",
-        "service": "auralink-ai",
+        "service": "synclyst",
         "shopify_configured": shopify_configured,
     }

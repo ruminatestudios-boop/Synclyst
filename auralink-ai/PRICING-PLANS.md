@@ -1,4 +1,4 @@
-# AuraLink AI – Payment plans (scan-based, profitable tiers)
+# SyncLyst – Payment plans (scan-based, profitable tiers)
 
 Plans are **based on number of scans per month** so API cost scales with usage and each tier keeps a healthy margin. **Batch processing** is on a higher tier to match cost and value.
 

@@ -21,7 +21,7 @@ export default function DashboardLoader() {
 
   return (
     <div style={{ minHeight: "100vh", padding: "2rem", fontFamily: "system-ui" }}>
-      <a href="/" style={{ display: "inline-block", marginBottom: "1rem", color: "#18181b" }}>← AuraLink AI</a>
+      <a href="/" style={{ display: "inline-block", marginBottom: "1rem", color: "#18181b" }}>← SyncLyst</a>
       <h1 style={{ fontSize: "1.5rem", fontWeight: 700 }}>Dashboard</h1>
       <p style={{ color: "#71717a", marginTop: "0.5rem" }}>If you see this, the server is working.</p>
       <p style={{ marginTop: "1.5rem" }}>

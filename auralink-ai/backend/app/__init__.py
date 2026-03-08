@@ -1,1 +1,1 @@
-# AuraLink AI Backend
+# SyncLyst Backend

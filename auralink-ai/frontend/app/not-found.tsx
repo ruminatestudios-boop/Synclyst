@@ -32,7 +32,7 @@ export default function NotFound() {
           fontWeight: 600,
         }}
       >
-        ← Back to AuraLink AI
+        ← Back to SyncLyst AI
       </a>
     </div>
   );

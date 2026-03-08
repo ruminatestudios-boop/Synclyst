@@ -3,7 +3,7 @@ import "./globals.css";
 import OptionalClerkProvider from "./OptionalClerkProvider";
 
 export const metadata: Metadata = {
-  title: "AuraLink AI – Dashboard",
+  title: "SyncLyst – Dashboard",
   description: "Multimodal product onboarding: image → structured data → omnichannel sync",
 };
 

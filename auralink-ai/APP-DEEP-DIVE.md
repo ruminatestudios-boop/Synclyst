@@ -1,4 +1,4 @@
-# AuraLink AI — App deep dive
+# SyncLyst — App deep dive
 
 A single reference for **how the app works**, **what’s missing**, and **what can be improved** so you can get it live and iterate.
 

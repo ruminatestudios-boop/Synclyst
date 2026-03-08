@@ -34,7 +34,7 @@ const healthUrl = `http://${ip}:8000/health`;
 
 console.log('');
 console.log('========================================');
-console.log('  AuraLink – phone test');
+console.log('  SyncLyst – phone test');
 console.log('========================================');
 console.log('');
 console.log('Using IP:', ip);

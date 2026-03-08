@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     """Settings loaded from env (e.g. .env)."""
 
     # API
-    app_name: str = "AuraLink AI"
+    app_name: str = "SyncLyst"
     debug: bool = False
 
     # CORS: comma-separated list of allowed origins (e.g. https://app.example.com,https://www.example.com)
@@ -66,10 +66,21 @@ class Settings(BaseSettings):
     integrations_webhook_secret: str = ""
 
     def get_cors_origins_list(self) -> List[str]:
-        """Return CORS origins as a list. Empty or '*' means allow all."""
+        """Return CORS origins as a list. Empty or '*' means allow all.
+        Local dev origins are always included so the dashboard on localhost can connect."""
+        local_origins = [
+            "http://localhost:3000",
+            "http://127.0.0.1:3000",
+            "http://localhost:5173",
+            "http://127.0.0.1:5173",
+        ]
         if not self.cors_origins or self.cors_origins.strip() == "*":
             return ["*"]
-        return [o.strip() for o in self.cors_origins.split(",") if o.strip()]
+        origins = [o.strip() for o in self.cors_origins.split(",") if o.strip()]
+        for o in local_origins:
+            if o not in origins:
+                origins.append(o)
+        return origins
 
     class Config:
         env_file = str(_ENV_FILE) if _ENV_FILE.exists() else ".env"

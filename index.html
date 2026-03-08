@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="auralink-api-url" content="http://localhost:8000" />
-    <title>AuraLink - List products. In seconds.</title>
+    <title>SyncLyst - List products. In seconds.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -78,7 +78,7 @@
         @media (max-width: 640px) {
             #scan-view { background: #0a0a0a; }
             #scan-view #scan-step-result { background: #fafafa; }
-            /* Header stays white with black AuraLink (no grey bar) */
+            /* Header stays white with black SyncLyst (no grey bar) */
             #scan-view .scan-view-header { padding-top: max(0.75rem, env(safe-area-inset-top)); }
             #scan-view #scan-step-camera { padding: 0; justify-content: stretch; }
             #scan-view #scan-step-camera .section-label, #scan-view #scan-step-camera > p.text-zinc-500, #scan-view #scan-step-camera > p.text-zinc-400, #scan-view #scan-step-camera #scan-upload-btn { display: none; }
@@ -156,12 +156,12 @@
         .integration-icon-live {
             animation: live-icon-pulse 2.2s ease-in-out infinite;
         }
-        /* Comparison: AuraLink card subtle glow + Shopify Sync live pulse */
+        /* Comparison: SyncLyst card subtle glow + Shopify Sync live pulse */
         @keyframes comparison-card-glow {
             0%, 100% { box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
             50% { box-shadow: 0 20px 50px rgba(0,0,0,0.14), 0 0 0 1px rgba(255,255,255,0.06); }
         }
-        .comparison-auralink-card {
+        .comparison-synclyst-card {
             animation: comparison-card-glow 3s ease-in-out infinite;
         }
         @keyframes comparison-sync-pulse {
@@ -175,11 +175,11 @@
 </head>
 <body class="min-h-screen bg-white text-black selection:bg-black selection:text-white">
 
-  <!-- Scan view: product capture → AuraLink extract (shown when ?mode=scan) -->
+  <!-- Scan view: product capture → SyncLyst extract (shown when ?mode=scan) -->
   <div id="scan-view" class="fixed inset-0 z-[80] hidden flex-col bg-[#fafafa] text-[#111]">
     <div class="scan-view-header flex items-center justify-between px-4 h-14 border-b border-[#eaeaea] bg-white shrink-0">
       <div></div>
-      <a href="/" class="text-xl font-bold tracking-tight text-[#111]">AuraLink</a>
+      <a href="/" class="text-xl font-bold tracking-tight text-[#111]">SyncLyst</a>
       <a href="/flow-batch-upload.html" class="text-xs font-medium text-amber-600 hover:text-amber-700">Batch</a>
     </div>
     <p id="scan-api-hint" class="hidden text-[10px] text-zinc-400 px-4 py-1 bg-zinc-100 border-b border-zinc-200 truncate" title="API URL used for extraction"></p>
@@ -298,12 +298,13 @@
                 </div>
             </div>
             <a href="#" class="flex items-center gap-2 flex-shrink-0 absolute left-1/2 -translate-x-1/2">
-                <span class="text-xl font-bold tracking-tight text-[#111]">AuraLink</span>
+                <span class="text-xl font-bold tracking-tight text-[#111]">SyncLyst</span>
             </a>
             <div class="hidden md:flex items-center gap-4 flex-1 justify-end min-w-0">
-                <button class="bg-black text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-zinc-800 transition-all">
-                    Start Deploying
-                </button>
+                <a href="/dashboard" class="text-sm text-[#555] hover:text-[#111] transition-colors">Login</a>
+                <a href="/dashboard" class="bg-black text-white px-5 py-2 rounded-lg text-sm font-medium hover:bg-zinc-800 transition-all no-underline">
+                    Sign up
+                </a>
             </div>
         </nav>
     </header>
@@ -322,10 +323,10 @@
                     </p>
                 </div>
                 <h1 class="text-3xl md:text-5xl font-bold tracking-tight leading-tight mb-8 text-[#000]">
-                    Photos → <span class="inline-flex items-center gap-1.5"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/shopify.svg" alt="" class="inline-block h-[0.85em] w-auto" style="filter: brightness(0);" /><span>Shopify</span></span> listings
+                    Photos to <span class="inline-flex items-center gap-1.5"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/shopify.svg" alt="" class="inline-block h-[0.85em] w-auto" style="filter: brightness(0);" /><span>Shopify</span></span> listings
                 </h1>
                 <p class="text-lg md:text-xl text-[#555] max-w-2xl mx-auto mb-10 text-balance leading-relaxed vercel-body">
-                    AuraLink is the platform for high-performance Shopify sellers. Turn product photos into SEO-ready listings instantly.
+                    SyncLyst is the platform for high-performance Shopify sellers. Turn product photos into SEO-ready listings instantly.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <a href="/?mode=scan" class="scan-hero-btn text-white px-8 py-3.5 rounded-xl font-semibold border border-[#002D2D] transition-all flex items-center gap-2.5 group inline-flex" style="background-color: #002D2D;">
@@ -363,46 +364,57 @@
             </div>
         </section>
 
-        <!-- Features: Benefits & key features (highlighted) -->
+        <!-- Features: How it works (step process) -->
         <section id="features" class="py-24 px-6 vercel-section-alt features-benefits-section">
             <div class="max-w-7xl mx-auto">
                 <div class="text-center mb-16">
                     <div class="features-benefits-label">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                        Benefits & key features
+                        <i data-lucide="list-ordered" class="w-3.5 h-3.5"></i>
+                        How it works
                     </div>
-                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 vercel-headline">Your product, delivered.</h2>
-                    <p class="text-[#555] text-lg max-w-xl mx-auto vercel-body">Security, speed, and AI included—so you can focus on selling.</p>
+                    <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-4 vercel-headline">From photo to live listing in 4 steps.</h2>
+                    <p class="text-[#555] text-lg max-w-xl mx-auto vercel-body">Do this to get your products on Shopify—no typing required.</p>
                 </div>
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
                     <div class="feature-benefit-card vercel-card p-8 rounded-2xl">
-                        <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center mb-6">
-                            <i data-lucide="camera" class="w-5 h-5 text-[#111]"></i>
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-black text-white text-sm font-bold flex items-center justify-center">1</span>
+                            <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center">
+                                <i data-lucide="camera" class="w-5 h-5 text-[#111]"></i>
+                            </div>
                         </div>
-                        <h3 class="text-lg font-semibold mb-3 text-[#111]">List in seconds, not hours</h3>
-                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Snap a photo and get a full listing—title, description, price, and category—so you can stop typing and start selling.</p>
+                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Snap or upload a photo</h3>
+                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Take a picture of your product or upload one from your device. One photo is enough to get started.</p>
                     </div>
                     <div class="feature-benefit-card vercel-card p-8 rounded-2xl">
-                        <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center mb-6">
-                            <i data-lucide="upload" class="w-5 h-5 text-[#111]"></i>
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-black text-white text-sm font-bold flex items-center justify-center">2</span>
+                            <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center">
+                                <i data-lucide="file-text" class="w-5 h-5 text-[#111]"></i>
+                            </div>
                         </div>
-                        <h3 class="text-lg font-semibold mb-3 text-[#111]">One click to your store</h3>
-                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Push listings straight to Shopify as drafts. Review, tweak if you like, then publish when you’re ready.</p>
+                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Review your draft listing</h3>
+                        <p class="text-sm text-[#555] leading-relaxed vercel-body">AI fills in title, description, category, and tags. Check the result and edit anything you want before pushing to your store.</p>
                     </div>
                     <div class="feature-benefit-card vercel-card p-8 rounded-2xl">
-                        <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center mb-6">
-                            <i data-lucide="search" class="w-5 h-5 text-[#111]"></i>
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-black text-white text-sm font-bold flex items-center justify-center">3</span>
+                            <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center">
+                                <i data-lucide="upload" class="w-5 h-5 text-[#111]"></i>
+                            </div>
                         </div>
-                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Get found by buyers</h3>
-                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Every listing is built to perform in search—so more customers can discover your products.</p>
+                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Push to Shopify as draft</h3>
+                        <p class="text-sm text-[#555] leading-relaxed vercel-body">Send the listing to your Shopify store as a draft. It won’t go live until you say so—you’re in control.</p>
                     </div>
-                    <div class="feature-benefit-card vercel-card p-8 rounded-2xl relative">
-                        <span class="absolute top-4 right-4 text-[10px] font-semibold px-2 py-0.5 rounded bg-black text-white">New</span>
-                        <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center mb-6">
-                            <i data-lucide="shield" class="w-5 h-5 text-[#111]"></i>
+                    <div class="feature-benefit-card vercel-card p-8 rounded-2xl">
+                        <div class="flex items-center gap-3 mb-6">
+                            <span class="flex-shrink-0 w-8 h-8 rounded-full bg-black text-white text-sm font-bold flex items-center justify-center">4</span>
+                            <div class="icon-wrap w-10 h-10 rounded-lg flex items-center justify-center">
+                                <i data-lucide="send" class="w-5 h-5 text-[#111]"></i>
+                            </div>
                         </div>
-                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Your data stays yours</h3>
-                        <p class="text-sm text-[#555] leading-relaxed vercel-body">We protect your store and product info so you can list with confidence.</p>
+                        <h3 class="text-lg font-semibold mb-3 text-[#111]">Publish when you’re ready</h3>
+                        <p class="text-sm text-[#555] leading-relaxed vercel-body">In Shopify admin, review the draft, make any final tweaks, then hit Publish. Your product is live and ready for buyers.</p>
                     </div>
                 </div>
             </div>
@@ -417,7 +429,7 @@
                         Efficiency
                     </div>
                     <h2 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 vercel-headline">Built for speed</h2>
-                    <p class="text-[#555] text-lg max-w-xl mx-auto vercel-body">AuraLink automates the tedious parts of selling, so you can focus on growing your brand.</p>
+                    <p class="text-[#555] text-lg max-w-xl mx-auto vercel-body">SyncLyst automates the tedious parts of selling, so you can focus on growing your brand.</p>
                 </div>
                 
                 <div class="grid md:grid-cols-2 gap-12 items-start">
@@ -472,10 +484,10 @@
                         </div>
                     </div>
                     
-                    <!-- AuraLink Side -->
+                    <!-- SyncLyst Side -->
                     <div class="relative">
                         <div class="absolute -top-6 -right-6 w-24 h-24 bg-black rounded-full blur-3xl opacity-10 -z-10"></div>
-                        <div class="comparison-auralink-card p-10 rounded-2xl border border-black bg-black text-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative overflow-hidden">
+                        <div class="comparison-synclyst-card p-10 rounded-2xl border border-black bg-black text-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative overflow-hidden">
                             <div class="absolute top-0 right-0 p-4">
                                 <div class="px-2 py-1 rounded bg-zinc-800 text-[10px] font-bold tracking-tighter border border-zinc-700">98% FASTER</div>
                             </div>
@@ -485,7 +497,7 @@
                                     <i data-lucide="zap" class="w-5 h-5 text-white fill-white"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-xl font-bold">AuraLink AI</h3>
+                                    <h3 class="text-xl font-bold">SyncLyst AI</h3>
                                     <p class="text-xs text-zinc-500 font-medium uppercase tracking-wider">The high-speed way</p>
                                 </div>
                             </div>
@@ -679,7 +691,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 md:gap-12 mb-16">
                 <div class="col-span-2">
                     <a href="#" class="inline-flex items-center gap-2 mb-4">
-                        <span class="text-xl font-bold tracking-tight text-[#111]">AuraLink</span>
+                        <span class="text-xl font-bold tracking-tight text-[#111]">SyncLyst</span>
                     </a>
                     <p class="text-sm text-[#555] max-w-xs leading-relaxed vercel-body">
                         The high-performance listing machine for modern sellers. Built for speed, optimized for SEO.
@@ -719,7 +731,7 @@
                 </div>
             </div>
             <div class="flex flex-col md:flex-row items-center justify-between gap-4 pt-8 border-t border-[#eaeaea] text-xs text-[#555]">
-                <p>© 2026 AuraLink AI. All rights reserved.</p>
+                <p>© 2026 SyncLyst AI. All rights reserved.</p>
                 <div class="flex gap-6">
                     <a href="#" class="hover:text-[#111] transition-colors"><i data-lucide="twitter" class="w-4 h-4 inline"></i></a>
                     <a href="#" class="hover:text-[#111] transition-colors"><i data-lucide="github" class="w-4 h-4 inline"></i></a>
@@ -746,31 +758,40 @@
     </div>
 
     <script>
-        // AuraLink API URL (injected at build via NEXT_PUBLIC_API_URL)
+        // SyncLyst API URL (injected at build via NEXT_PUBLIC_API_URL)
         window.AURALINK_CONFIG = { API_URL: 'http://localhost:8000' };
         (function() {
           var meta = document.querySelector('meta[name="auralink-api-url"]');
           var url = (meta && meta.getAttribute('content') ? meta.getAttribute('content').trim().replace(/\/$/, '') : '') || window.AURALINK_CONFIG.API_URL;
           window.AURALINK_CONFIG.API_URL = (url && url !== 'http://localhost:8000') ? url : 'http://localhost:8000';
           var host = window.location.hostname;
-          if (host && host !== 'localhost' && host !== '127.0.0.1' && (!window.AURALINK_CONFIG.API_URL || window.AURALINK_CONFIG.API_URL.indexOf('localhost') !== -1)) {
-            window.AURALINK_CONFIG.API_URL = window.location.protocol + '//' + host + ':8000';
+          // On production (e.g. synclyst.app), use same origin so /api/v1/vision/extract is proxied by Vercel
+          if (host && host !== 'localhost' && host !== '127.0.0.1') {
+            window.AURALINK_CONFIG.API_URL = window.location.origin;
           }
         })();
 
         document.addEventListener('DOMContentLoaded', function() {
-        // Smooth Scroll with Zoom
+        // Fast smooth scroll (zoom) to section
         function handleNavigate(e, id) {
             e.preventDefault();
             const element = document.getElementById(id);
-            if (element) {
-                document.body.classList.add('scrolling');
-                element.scrollIntoView({ behavior: 'smooth' });
-                
-                setTimeout(() => {
+            if (!element) return;
+            document.body.classList.add('scrolling');
+            const start = window.scrollY || window.pageYOffset;
+            const target = element.getBoundingClientRect().top + start;
+            const duration = 500;
+            const startTime = performance.now();
+            function step(now) {
+                const t = Math.min((now - startTime) / duration, 1);
+                const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                window.scrollTo(0, start + (target - start) * eased);
+                if (t < 1) requestAnimationFrame(step);
+                else {
                     document.body.classList.remove('scrolling');
-                }, 1000);
+                }
             }
+            requestAnimationFrame(step);
         }
 
         // Initialize Lucide icons
@@ -833,7 +854,7 @@
                             </div>
                         </div>
                         <img src="${thumbSrc}" alt="${v.title}" class="w-full h-full object-cover transition-all duration-500 thumbnail" referrerPolicy="no-referrer">
-                        <video src="${v.videoUrl || 'https://assets.mixkit.co/videos/preview/mixkit-fashion-girl-walking-in-a-field-of-flowers-34442-large.mp4'}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 preview-video" muted loop playsinline></video>
+                        <video src="${v.videoUrl || 'https://cdn.shopify.com/videos/c/o/v/fd32bb276dc64999a7a3bc00066f58ef.mp4'}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 preview-video" muted loop playsinline></video>
                     </div>
                     <div class="p-6">
                         <h3 class="text-sm font-bold uppercase tracking-wider mb-1">${v.title}</h3>
@@ -946,7 +967,7 @@
         const faqs = [
             { q: "How does the scanning process actually work?", a: "Simply snap a photo of your product. Our vision models instantly identify the item, read any labels (OCR), and extract key attributes like brand, material, color, and dimensions to build a complete draft." },
             { q: "Can I customize the 'voice' of the AI-generated descriptions?", a: "Yes. Pro users can set custom brand guidelines. Whether you want your listings to sound luxury, minimalist, or high-energy, the AI adapts its writing style to match your store's personality." },
-            { q: "Does AuraLink handle product variations like sizes and colors?", a: "Absolutely. The AI can detect multiple variations from a single scan or a series of photos, automatically grouping them into a single Shopify listing with the correct variant options." },
+            { q: "Does SyncLyst handle product variations like sizes and colors?", a: "Absolutely. The AI can detect multiple variations from a single scan or a series of photos, automatically grouping them into a single Shopify listing with the correct variant options." },
             { q: "Can I edit the listing before it goes live on Shopify?", a: "Of course. Every scan creates a 'Draft' first. You can review, tweak the SEO title, adjust the price, or swap tags before hitting 'Publish' to sync it to your store." },
             { q: "How does it handle messy backgrounds or poor lighting?", a: "Our vision models are trained on real-world seller environments. While good lighting helps, the AI is excellent at isolating the product from busy backgrounds and correcting for minor lighting issues." },
             { q: "Which marketplaces are supported right now?", a: "We are currently active with Shopify, with integrations for Etsy, eBay, and TikTok Shop coming soon." },
@@ -978,7 +999,7 @@
         const privacyContent = `
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">1. Introduction</h4>
-                <p>Welcome to AuraLink AI. We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains how we collect, use, and safeguard your data when you use our platform.</p>
+                <p>Welcome to SyncLyst AI. We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains how we collect, use, and safeguard your data when you use our platform.</p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">2. Information We Collect</h4>
@@ -1005,11 +1026,11 @@
         const termsContent = `
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">1. Acceptance of Terms</h4>
-                <p>By accessing or using AuraLink AI, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+                <p>By accessing or using SyncLyst AI, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">2. Description of Service</h4>
-                <p>AuraLink AI provides AI-powered tools for e-commerce sellers to generate product listings and sync them with platforms like Shopify. We reserve the right to modify or discontinue the service at any time.</p>
+                <p>SyncLyst AI provides AI-powered tools for e-commerce sellers to generate product listings and sync them with platforms like Shopify. We reserve the right to modify or discontinue the service at any time.</p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">3. User Accounts</h4>
@@ -1017,7 +1038,7 @@
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">4. Intellectual Property</h4>
-                <p>You retain all rights to the product photos and store data you provide. AuraLink AI owns all rights to the platform, AI models, and generated code. You are granted a license to use the generated listings for your commercial purposes.</p>
+                <p>You retain all rights to the product photos and store data you provide. SyncLyst AI owns all rights to the platform, AI models, and generated code. You are granted a license to use the generated listings for your commercial purposes.</p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">5. Prohibited Conduct</h4>
@@ -1025,21 +1046,21 @@
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">6. Limitation of Liability</h4>
-                <p>AuraLink AI shall not be liable for any indirect, incidental, or consequential damages resulting from the use or inability to use our services.</p>
+                <p>SyncLyst AI shall not be liable for any indirect, incidental, or consequential damages resulting from the use or inability to use our services.</p>
             </section>
         `;
 
         const aboutContent = `
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Who we are</h4>
-                <p>AuraLink AI is the platform for high-performance Shopify sellers. We turn product photos into SEO-ready listings in seconds, so you can list more and sell more.</p>
+                <p>SyncLyst AI is the platform for high-performance Shopify sellers. We turn product photos into SEO-ready listings in seconds, so you can list more and sell more.</p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">What we do</h4>
                 <p>Our AI scans your product images, extracts titles, descriptions, attributes, and tags, and syncs draft listings to Shopify. You review and publish when you’re ready—no more manual data entry or copy-paste.</p>
             </section>
             <section>
-                <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Why AuraLink</h4>
+                <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Why SyncLyst</h4>
                 <p>We combine computer vision, natural language, and direct Shopify integration so one photo becomes a full listing. Sellers get more time back, fewer errors, and listings that rank. We’re building the fastest path from photo to live product.</p>
             </section>
         `;
@@ -1051,11 +1072,11 @@
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Email</h4>
-                <p><a href="mailto:hello@auralink.ai" class="text-[#111] font-medium underline hover:no-underline">hello@auralink.ai</a></p>
+                <p><a href="mailto:hello@synclyst.app" class="text-[#111] font-medium underline hover:no-underline">hello@synclyst.app</a></p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">Support</h4>
-                <p>For product support or billing questions, use the in-app help or email <a href="mailto:support@auralink.ai" class="text-[#111] font-medium underline hover:no-underline">support@auralink.ai</a>.</p>
+                <p>For product support or billing questions, use the in-app help or email <a href="mailto:support@synclyst.app" class="text-[#111] font-medium underline hover:no-underline">support@synclyst.app</a>.</p>
             </section>
         `;
 

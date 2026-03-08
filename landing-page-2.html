@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AuraLink - List products. In seconds.</title>
+    <title>SyncLyst - List products. In seconds.</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -75,7 +75,7 @@
         <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
             <div class="flex items-center gap-10">
                 <a href="#" class="flex items-center gap-2">
-                    <span class="text-sm font-bold tracking-tight">AuraLink</span>
+                    <span class="text-sm font-bold tracking-tight">SyncLyst</span>
                 </a>
                 <div class="hidden md:flex items-center gap-6">
                     <a href="#features" onclick="handleNavigate(event, 'features')" class="text-sm text-[#666] hover:text-black transition-colors">Features</a>
@@ -122,7 +122,7 @@
                     Turn photos into listings
                 </h1>
                 <p class="text-lg md:text-xl text-[#666] max-w-2xl mx-auto mb-10 text-balance leading-relaxed">
-                    AuraLink is the platform for high-performance Shopify sellers. Turn product photos into SEO-ready listings instantly.
+                    SyncLyst is the platform for high-performance Shopify sellers. Turn product photos into SEO-ready listings instantly.
                 </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <a href="http://localhost:3000/landing.html?mode=scan" class="bg-black text-white px-8 py-3.5 rounded-xl font-semibold border border-black hover:bg-zinc-900 transition-all flex items-center gap-2.5 group inline-flex">
@@ -193,7 +193,7 @@
                         Efficiency
                     </div>
                     <h2 class="text-4xl md:text-6xl font-extrabold tracking-tighter mb-6">Built for speed</h2>
-                    <p class="text-[#666] text-lg max-w-xl mx-auto">AuraLink automates the tedious parts of selling, so you can focus on growing your brand.</p>
+                    <p class="text-[#666] text-lg max-w-xl mx-auto">SyncLyst automates the tedious parts of selling, so you can focus on growing your brand.</p>
                 </div>
                 
                 <div class="grid md:grid-cols-2 gap-12 items-start">
@@ -248,7 +248,7 @@
                         </div>
                     </div>
                     
-                    <!-- AuraLink Side -->
+                    <!-- SyncLyst Side -->
                     <div class="relative">
                         <div class="absolute -top-6 -right-6 w-24 h-24 bg-black rounded-full blur-3xl opacity-10 -z-10"></div>
                         <div class="p-10 rounded-2xl border border-black bg-black text-white shadow-[0_20px_50px_rgba(0,0,0,0.1)] relative overflow-hidden">
@@ -261,7 +261,7 @@
                                     <i data-lucide="zap" class="w-5 h-5 text-white fill-white"></i>
                                 </div>
                                 <div>
-                                    <h3 class="text-xl font-bold">AuraLink AI</h3>
+                                    <h3 class="text-xl font-bold">SyncLyst AI</h3>
                                     <p class="text-xs text-zinc-500 font-medium uppercase tracking-wider">The high-speed way</p>
                                 </div>
                             </div>
@@ -448,7 +448,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-12 mb-20">
                 <div class="col-span-2">
                     <a href="#" class="flex items-center gap-2 mb-6">
-                        <span class="text-sm font-bold tracking-tight">AuraLink</span>
+                        <span class="text-sm font-bold tracking-tight">SyncLyst</span>
                     </a>
                     <p class="text-sm text-[#666] max-w-xs leading-relaxed">
                         The high-performance listing machine for modern sellers. Built for speed, optimized for SEO.
@@ -479,7 +479,7 @@
                 </div>
             </div>
             <div class="flex flex-col md:flex-row items-center justify-between gap-6 pt-8 border-t border-[#eaeaea] text-xs text-[#666]">
-                <p>© 2026 AuraLink AI. All rights reserved.</p>
+                <p>© 2026 SyncLyst AI. All rights reserved.</p>
                 <div class="flex gap-8">
                     <button onclick="openModal('privacy')" class="hover:text-black transition-colors">Privacy Policy</button>
                     <button onclick="openModal('terms')" class="hover:text-black transition-colors">Terms of Service</button>
@@ -511,18 +511,26 @@
     </div>
 
     <script>
-        // Smooth Scroll with Zoom
+        // Fast smooth scroll (zoom) to section
         function handleNavigate(e, id) {
             e.preventDefault();
             const element = document.getElementById(id);
-            if (element) {
-                document.body.classList.add('scrolling');
-                element.scrollIntoView({ behavior: 'smooth' });
-                
-                setTimeout(() => {
+            if (!element) return;
+            document.body.classList.add('scrolling');
+            const start = window.scrollY || window.pageYOffset;
+            const target = element.getBoundingClientRect().top + start;
+            const duration = 500;
+            const startTime = performance.now();
+            function step(now) {
+                const t = Math.min((now - startTime) / duration, 1);
+                const eased = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+                window.scrollTo(0, start + (target - start) * eased);
+                if (t < 1) requestAnimationFrame(step);
+                else {
                     document.body.classList.remove('scrolling');
-                }, 1000);
+                }
             }
+            requestAnimationFrame(step);
         }
 
         // Initialize Lucide icons
@@ -584,7 +592,7 @@
                             </div>
                         </div>
                         <img src="${thumbSrc}" alt="${v.title}" class="w-full h-full object-cover transition-all duration-500 thumbnail" referrerPolicy="no-referrer">
-                        <video src="${v.videoUrl || 'https://assets.mixkit.co/videos/preview/mixkit-fashion-girl-walking-in-a-field-of-flowers-34442-large.mp4'}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 preview-video" muted loop playsinline></video>
+                        <video src="${v.videoUrl || 'https://cdn.shopify.com/videos/c/o/v/fd32bb276dc64999a7a3bc00066f58ef.mp4'}" class="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-300 preview-video" muted loop playsinline></video>
                     </div>
                     <div class="p-6">
                         <h3 class="text-sm font-bold uppercase tracking-wider mb-1">${v.title}</h3>
@@ -695,7 +703,7 @@
         const faqs = [
             { q: "How does the scanning process actually work?", a: "Simply snap a photo of your product. Our vision models instantly identify the item, read any labels (OCR), and extract key attributes like brand, material, color, and dimensions to build a complete draft." },
             { q: "Can I customize the 'voice' of the AI-generated descriptions?", a: "Yes. Pro users can set custom brand guidelines. Whether you want your listings to sound luxury, minimalist, or high-energy, the AI adapts its writing style to match your store's personality." },
-            { q: "Does AuraLink handle product variations like sizes and colors?", a: "Absolutely. The AI can detect multiple variations from a single scan or a series of photos, automatically grouping them into a single Shopify listing with the correct variant options." },
+            { q: "Does SyncLyst handle product variations like sizes and colors?", a: "Absolutely. The AI can detect multiple variations from a single scan or a series of photos, automatically grouping them into a single Shopify listing with the correct variant options." },
             { q: "Can I edit the listing before it goes live on Shopify?", a: "Of course. Every scan creates a 'Draft' first. You can review, tweak the SEO title, adjust the price, or swap tags before hitting 'Publish' to sync it to your store." },
             { q: "How does it handle messy backgrounds or poor lighting?", a: "Our vision models are trained on real-world seller environments. While good lighting helps, the AI is excellent at isolating the product from busy backgrounds and correcting for minor lighting issues." },
             { q: "Which marketplaces are supported right now?", a: "We are currently active with Shopify, with integrations for Etsy, eBay, and TikTok Shop coming soon." },
@@ -727,7 +735,7 @@
         const privacyContent = `
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">1. Introduction</h4>
-                <p>Welcome to AuraLink AI. We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains how we collect, use, and safeguard your data when you use our platform.</p>
+                <p>Welcome to SyncLyst AI. We are committed to protecting your personal information and your right to privacy. This Privacy Policy explains how we collect, use, and safeguard your data when you use our platform.</p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">2. Information We Collect</h4>
@@ -754,11 +762,11 @@
         const termsContent = `
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">1. Acceptance of Terms</h4>
-                <p>By accessing or using AuraLink AI, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
+                <p>By accessing or using SyncLyst AI, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our services.</p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">2. Description of Service</h4>
-                <p>AuraLink AI provides AI-powered tools for e-commerce sellers to generate product listings and sync them with platforms like Shopify. We reserve the right to modify or discontinue the service at any time.</p>
+                <p>SyncLyst AI provides AI-powered tools for e-commerce sellers to generate product listings and sync them with platforms like Shopify. We reserve the right to modify or discontinue the service at any time.</p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">3. User Accounts</h4>
@@ -766,7 +774,7 @@
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">4. Intellectual Property</h4>
-                <p>You retain all rights to the product photos and store data you provide. AuraLink AI owns all rights to the platform, AI models, and generated code. You are granted a license to use the generated listings for your commercial purposes.</p>
+                <p>You retain all rights to the product photos and store data you provide. SyncLyst AI owns all rights to the platform, AI models, and generated code. You are granted a license to use the generated listings for your commercial purposes.</p>
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">5. Prohibited Conduct</h4>
@@ -774,7 +782,7 @@
             </section>
             <section>
                 <h4 class="text-black font-bold mb-2 uppercase tracking-widest text-[10px]">6. Limitation of Liability</h4>
-                <p>AuraLink AI shall not be liable for any indirect, incidental, or consequential damages resulting from the use or inability to use our services.</p>
+                <p>SyncLyst AI shall not be liable for any indirect, incidental, or consequential damages resulting from the use or inability to use our services.</p>
             </section>
         `;
 

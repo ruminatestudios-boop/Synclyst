@@ -19,7 +19,7 @@ export default function HomePage() {
       }}
     >
       <h1 style={{ fontSize: "2rem", fontWeight: 700, marginBottom: "0.5rem" }}>
-        AuraLink AI
+        SyncLyst
       </h1>
       <p style={{ color: "#71717a", marginBottom: "2rem" }}>
         Product photo → listing → multi-channel sync

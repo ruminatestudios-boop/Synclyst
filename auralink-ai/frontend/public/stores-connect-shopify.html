@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="auralink-api-url" content="http://localhost:8000" />
   <meta name="auralink-publishing-url" content="http://localhost:8001" />
-  <title>Connect Shopify | AuraLink AI</title>
+  <title>Connect Shopify | SyncLyst</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:ital,wght@0,400;0,600;0,700&display=swap" rel="stylesheet" />
@@ -35,7 +35,7 @@
         </span>
         <div>
           <h1 class="font-serif text-xl font-bold text-zinc-900">Connect Shopify</h1>
-          <p class="text-sm text-zinc-500 mt-0.5">Authorise AuraLink to list and manage products in your store</p>
+          <p class="text-sm text-zinc-500 mt-0.5">Authorise SyncLyst to list and manage products in your store</p>
         </div>
       </div>
 
@@ -49,7 +49,7 @@
       </div>
 
       <div class="rounded-xl bg-zinc-100 border border-zinc-200 p-4 mb-8">
-        <p class="text-sm text-zinc-700">You’ll be sent to Shopify to sign in and approve access. AuraLink can then create and update product listings. You approve every listing before it goes live.</p>
+        <p class="text-sm text-zinc-700">You’ll be sent to Shopify to sign in and approve access. SyncLyst can then create and update product listings. You approve every listing before it goes live.</p>
       </div>
 
       <button type="button" id="connect-btn" class="block w-full py-3.5 rounded-2xl bg-zinc-900 text-white font-semibold text-[15px] border border-zinc-800 text-center mb-3">
@@ -152,6 +152,11 @@
       var connectBtn = document.getElementById('connect-btn');
       var errorEl = document.getElementById('shop-error');
       var loginHintEl = document.getElementById('shop-login-hint');
+      var redirectError = params.get('error');
+      if (redirectError && errorEl) {
+        errorEl.textContent = redirectError;
+        errorEl.classList.remove('hidden');
+      }
       function updateLoginHint() {
         var shop = (shopInput && shopInput.value || '').trim();
         if (!shop) { if (loginHintEl) { loginHintEl.classList.add('hidden'); loginHintEl.textContent = ''; } return; }

@@ -9,3 +9,5 @@ config.js
 *.sqlite
 *.sqlite-journal
 *.mp4
+.next
+**/__pycache__

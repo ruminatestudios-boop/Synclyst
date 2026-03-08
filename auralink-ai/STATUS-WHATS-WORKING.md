@@ -1,6 +1,6 @@
 # Is it working? What’s missing?
 
-Quick status of the AuraLink photo → extraction → draft flow.
+Quick status of the SyncLyst photo → extraction → draft flow.
 
 ---
 
@@ -24,7 +24,7 @@ So: **take/upload photo → “Reading your product” → extracted result on s
 Your `backend/.env` has:
 
 ```env
-CORS_ORIGINS=https://auralink.ai,https://www.auralink.ai
+CORS_ORIGINS=https://synclyst.app,https://www.synclyst.app
 ```
 
 So the backend **only allows** those origins. When you run the app at **http://localhost:3000**, the browser sends `Origin: http://localhost:3000`, and the backend will **not** include that in `Access-Control-Allow-Origin`, so the browser blocks the response and you get network/CORS errors (e.g. “Couldn't reach the server” or failed fetch).
@@ -32,7 +32,7 @@ So the backend **only allows** those origins. When you run the app at **http://l
 **Fix for local dev:** In `backend/.env` either:
 
 - Set `CORS_ORIGINS=` (empty) or `CORS_ORIGINS=*` to allow all origins, or  
-- Add your dev origin: `CORS_ORIGINS=http://localhost:3000,https://auralink.ai,https://www.auralink.ai`
+- Add your dev origin: `CORS_ORIGINS=http://localhost:3000,https://synclyst.app,https://www.synclyst.app`
 
 Then restart the backend.
 

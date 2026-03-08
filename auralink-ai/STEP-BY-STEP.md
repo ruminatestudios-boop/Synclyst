@@ -1,4 +1,4 @@
-# Step-by-step: Get AuraLink running locally
+# Step-by-step: Get SyncLyst running locally
 
 Follow these steps in order. Use two terminals (one for backend, one for frontend).
 

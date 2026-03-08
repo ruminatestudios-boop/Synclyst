@@ -10,7 +10,7 @@
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
-  <title>Review | Listing Flow | AuraLink AI</title>
+  <title>Review | Listing Flow | SyncLyst</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -27,12 +27,12 @@
   </script>
   <style>
     body { font-family: 'Inter', system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-    .vercel-headline { font-weight: 700; color: #111; letter-spacing: -0.025em; }
-    .vercel-body { font-weight: 400; color: #555; }
-    .vercel-card { background: #fff; border: 1px solid #eaeaea; border-radius: 16px; }
-    .progress-dot { width: 6px; height: 6px; border-radius: 3px; background: #eaeaea; transition: all 0.2s; }
-    .progress-dot.done { background: #a1a1aa; }
-    .progress-dot.current { width: 20px; background: #111; }
+    .vercel-headline { font-weight: 700; color: #0a0a0a; letter-spacing: -0.025em; }
+    .vercel-body { font-weight: 400; color: #525252; }
+    .vercel-card { background: #fff; border: 1px solid #e5e5e5; border-radius: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+    .progress-dot { width: 6px; height: 6px; border-radius: 3px; background: #e5e5e5; transition: all 0.2s; }
+    .progress-dot.done { background: #a3a3a3; }
+    .progress-dot.current { width: 20px; background: #0a0a0a; }
     .review-photo-delete { position: absolute; top: 4px; right: 4px; width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.6); color: #fff; font-size: 14px; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; border: none; padding: 0; }
     .review-photo-delete:hover { background: rgba(0,0,0,0.8); }
     .review-photo-delete-sm { top: 2px; right: 2px; width: 16px; height: 16px; font-size: 11px; }
@@ -95,57 +95,62 @@
     .photo-stack-anim .stack-img:nth-child(4) { left: 18px; top: 0; animation: photo-stack-in 0.4s ease-out 0.45s forwards; opacity: 0; }
     .photo-stack-anim .stack-img:nth-child(5) { left: 24px; top: 0; animation: photo-stack-in 0.4s ease-out 0.6s forwards; opacity: 0; }
     /* Shopify-style section: label only, card below */
-    .section-label { font-size: 13px; font-weight: 500; color: #111; margin-bottom: 8px; display: block; }
-    .section-hint { font-size: 12px; color: #555; margin-top: 4px; margin-bottom: 8px; }
-    .toggle-switch { width: 36px; height: 20px; border-radius: 10px; background: #eaeaea; appearance: none; cursor: pointer; position: relative; flex-shrink: 0; transition: background 0.2s; }
-    .toggle-switch:checked { background: #111; }
+    .section-label { font-size: 13px; font-weight: 500; color: #0a0a0a; margin-bottom: 8px; display: block; }
+    .section-hint { font-size: 12px; color: #525252; margin-top: 4px; margin-bottom: 8px; }
+    .toggle-switch { width: 36px; height: 20px; border-radius: 10px; background: #d4d4d4; appearance: none; cursor: pointer; position: relative; flex-shrink: 0; transition: background 0.2s; }
+    .toggle-switch:checked { background: #0a0a0a; }
     .toggle-switch::after { content: ''; position: absolute; width: 16px; height: 16px; border-radius: 50%; background: #fff; top: 2px; left: 2px; box-shadow: 0 1px 2px rgba(0,0,0,0.2); transition: transform 0.2s; }
     .toggle-switch:checked::after { transform: translateX(16px); }
     #modal-description { scrollbar-width: none; -ms-overflow-style: none; }
     #modal-description::-webkit-scrollbar { display: none; }
     #modal-meta-description { scrollbar-width: none; -ms-overflow-style: none; overflow: hidden; }
     #modal-meta-description::-webkit-scrollbar { display: none; }
-    .quality-improve-row { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; border-radius: 12px; background: #fff; border: 1px solid #e4e4e7; text-align: left; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
+    /* Tips cards: white, yellow tint for critical only; no left bar */
+    .quality-improve-row { display: flex; align-items: flex-start; gap: 14px; padding: 14px 16px; border-radius: 12px; background: #fff; border: 1px solid #e5e5e5; text-align: left; box-shadow: 0 1px 2px rgba(0,0,0,0.04); }
     .quality-improve-row .quality-improve-icon { flex-shrink: 0; width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-    .quality-improve-row .quality-improve-text { font-size: 13px; line-height: 1.5; color: #3f3f46; }
+    .quality-improve-row .quality-improve-text { font-size: 13px; line-height: 1.5; color: #262626; }
     .quality-improve-row.critical { background: #fffbeb; }
-    .quality-improve-row.critical .quality-improve-text { color: #78350f; font-weight: 500; }
-    .quality-improve-row.critical .quality-improve-icon { color: #b45309; background: #fef3c7; }
+    .quality-improve-row.critical .quality-improve-text { color: #0a0a0a; font-weight: 500; }
+    .quality-improve-row.critical .quality-improve-icon { color: #a16207; background: #fef08a; }
     .quality-improve-row.recommended { }
-    .quality-improve-row.recommended .quality-improve-text { color: #334155; }
-    .quality-improve-row.recommended .quality-improve-icon { color: #475569; background: #f1f5f9; }
-    .quality-improve-row.optional .quality-improve-text { color: #52525b; }
-    .quality-improve-row.optional .quality-improve-icon { color: #71717a; background: #f4f4f5; }
-    .quality-improve-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #71717a; margin-bottom: 8px; }
+    .quality-improve-row.recommended .quality-improve-text { color: #262626; }
+    .quality-improve-row.recommended .quality-improve-icon { color: #525252; background: #f5f5f5; }
+    .quality-improve-row.optional .quality-improve-text { color: #525252; }
+    .quality-improve-row.optional .quality-improve-icon { color: #737373; background: #fafafa; }
+    .quality-improve-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: #525252; margin-bottom: 8px; }
+    .quality-improve-row { cursor: pointer; }
+    .quality-improve-row:hover { background: #fafafa !important; }
+    .quality-improve-row.critical:hover { background: #fef9c3 !important; }
+    .section-highlight { box-shadow: 0 0 0 3px #eab308; border-radius: 14px; transition: box-shadow 0.2s ease; }
     #listing-quality-improvements { scrollbar-width: none; -ms-overflow-style: none; }
     #listing-quality-improvements::-webkit-scrollbar { display: none; }
-    .listing-quality-score-num { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; color: #18181b; line-height: 1; }
-    .listing-quality-status { font-size: 13px; color: #71717a; margin-bottom: 12px; }
+    .listing-quality-score-num { font-size: 2rem; font-weight: 700; letter-spacing: -0.03em; color: #0a0a0a; line-height: 1; }
+    .listing-quality-status { font-size: 13px; color: #525252; margin-bottom: 12px; }
     .listing-quality-bar-track { display: flex; gap: 1px; height: 8px; align-items: stretch; }
-    .listing-quality-segment { flex: 1; min-width: 1px; border-radius: 1px; background: #e4e4e7; transition: background 0.25s ease; }
-    .listing-quality-segment.filled { background: var(--seg-color, #404040); }
-    .smart-suggest-banner { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #f4f4f5; border-radius: 12px; border: none; }
-    .smart-suggest-banner .smart-suggest-icon-wrap { flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: #e4e4e7; display: flex; align-items: center; justify-content: center; }
-    .smart-suggest-banner .smart-suggest-icon-wrap i { color: #52525b; }
+    .listing-quality-segment { flex: 1; min-width: 1px; border-radius: 1px; background: #e5e5e5; transition: background 0.25s ease; }
+    .listing-quality-segment.filled { background: var(--seg-color, #eab308); }
+    .smart-suggest-banner { display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fffbeb; border-radius: 12px; border: 1px solid #fde047; }
+    .smart-suggest-banner .smart-suggest-icon-wrap { flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: #fef08a; display: flex; align-items: center; justify-content: center; }
+    .smart-suggest-banner .smart-suggest-icon-wrap i { color: #a16207; }
     .smart-suggest-banner .smart-suggest-text { flex: 1; min-width: 0; }
-    .smart-suggest-banner .smart-suggest-title { font-size: 13px; font-weight: 600; color: #18181b; }
-    .smart-suggest-banner .smart-suggest-desc { font-size: 12px; font-weight: 400; color: #52525b; margin-top: 2px; }
+    .smart-suggest-banner .smart-suggest-title { font-size: 13px; font-weight: 600; color: #0a0a0a; }
+    .smart-suggest-banner .smart-suggest-desc { font-size: 12px; font-weight: 400; color: #525252; margin-top: 2px; }
   </style>
 </head>
-<body class="min-h-screen bg-[#fafafa] font-sans text-[#111] antialiased">
+<body class="min-h-screen bg-[#f5f5f5] font-sans text-[#0a0a0a] antialiased">
   <div class="max-w-md mx-auto min-h-screen flex flex-col bg-white shadow-sm">
     <!-- Header: landing-style -->
-    <header class="shrink-0 border-b border-[#eaeaea] bg-white/80 backdrop-blur-sm px-4 h-14 grid grid-cols-3 items-center">
+    <header class="shrink-0 border-b border-[#e5e5e5] bg-white/95 backdrop-blur-sm px-4 h-14 grid grid-cols-3 items-center">
       <div id="flow3-header-left"></div>
-      <a href="/" class="text-xl font-bold tracking-tight text-[#111] justify-self-center">AuraLink</a>
+      <a href="/" class="text-xl font-bold tracking-tight text-[#0a0a0a] justify-self-center">SyncLyst</a>
       <div class="justify-self-end"></div>
     </header>
     <main class="flex-1 px-5 pt-6 pb-6 overflow-auto">
-      <h1 class="vercel-headline text-xl font-bold text-[#111] mb-1 text-center">Confirm your listing</h1>
-      <p class="text-center text-sm text-[#555] mb-6 vercel-body">Review and edit any field, then push live.</p>
+      <h1 class="vercel-headline text-xl font-bold text-[#0a0a0a] mb-1 text-center">Confirm your listing</h1>
+      <p class="text-center text-sm text-[#525252] mb-6 vercel-body">Review and edit any field, then push live.</p>
 
-      <!-- Smart Suggest banner (design reference) -->
-      <button type="button" id="smart-suggest-banner-btn" class="smart-suggest-banner mb-6 w-full text-left cursor-pointer hover:bg-[#e4e4e7] transition-colors">
+      <!-- Smart Suggest banner (informational only, not clickable) -->
+      <div class="smart-suggest-banner mb-6 w-full text-left">
         <div class="smart-suggest-icon-wrap">
           <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/shopify.svg" alt="" class="w-5 h-5" width="20" height="20" />
         </div>
@@ -153,7 +158,7 @@
           <span class="smart-suggest-title">Smart Suggest:</span>
           <span class="smart-suggest-desc">AI analysed your photo — title, description, SEO tags and price all set from one scan.</span>
         </div>
-      </button>
+      </div>
 
       <!-- Shown when user returns from Shopify OAuth -->
       <div id="shopify-connected-banner" class="hidden rounded-xl border border-[#059669] bg-[#ecfdf5] px-4 py-3 mb-6 flex items-center justify-between gap-3">
@@ -166,19 +171,19 @@
 
       <div class="space-y-5">
         <!-- Title -->
-        <div class="vercel-card p-5">
+        <div id="modal-section-title" class="vercel-card p-5">
           <label for="modal-title" class="section-label">Title</label>
           <input type="text" id="modal-title" class="w-full text-sm font-medium text-[#111] bg-white border border-[#eaeaea] rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:border-transparent" placeholder="Product title" />
         </div>
 
         <!-- Description -->
-        <div class="vercel-card p-5">
+        <div id="modal-section-description" class="vercel-card p-5">
           <label for="modal-description" class="section-label">Description</label>
           <textarea id="modal-description" rows="5" class="w-full text-sm text-[#111] bg-white border border-[#eaeaea] rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:border-transparent resize-none min-h-[120px]" placeholder="Full product description" data-auto-resize></textarea>
         </div>
 
         <!-- Photos -->
-        <div class="vercel-card p-5">
+        <div id="modal-section-photos" class="vercel-card p-5">
           <span class="section-label">Photos</span>
           <p class="section-hint">Add product images. The first photo is used to suggest title and category.</p>
           <div class="mt-2 rounded-xl border border-dashed border-[#eaeaea] bg-[#fafafa] p-4">
@@ -203,7 +208,7 @@
         </div>
 
         <!-- Category -->
-        <div class="vercel-card p-5">
+        <div id="modal-section-category" class="vercel-card p-5">
           <label for="modal-category" class="section-label">Category</label>
           <p class="section-hint">Determines tax rates and adds metafields to improve search, filters, and cross-channel sales.</p>
           <input type="text" id="modal-category" class="w-full text-sm text-[#111] bg-white border border-[#eaeaea] rounded-lg px-3 py-2.5 focus:outline-none focus:ring-2 focus:ring-zinc-300 focus:border-transparent" placeholder="Choose a product category" list="modal-category-list" />
@@ -351,37 +356,37 @@
           </div>
         </div>
 
-        <!-- Listing quality score (Sprint-style card) -->
-        <div id="listing-quality-card" class="rounded-2xl bg-[#f4f4f5] border border-[#e4e4e7] overflow-hidden mb-6 mt-6">
+        <!-- Listing quality score (new card: white, subtle shadow, yellow accent) -->
+        <div id="listing-quality-card" class="rounded-2xl bg-white border border-[#e5e5e5] overflow-hidden mb-6 mt-6 shadow-sm" style="box-shadow: 0 1px 3px rgba(0,0,0,0.06);">
           <div class="p-5">
-            <h2 class="text-lg font-bold text-zinc-900 mb-0">Listing quality</h2>
-            <hr class="border-0 border-b border-[#e4e4e7] mt-2 mb-3" />
+            <h2 class="text-lg font-bold text-[#0a0a0a] mb-0">Listing quality</h2>
+            <hr class="border-0 border-b border-[#e5e5e5] mt-2 mb-3" />
             <p id="listing-quality-status" class="listing-quality-status">See how ready your listing is before you publish.</p>
             <div class="flex items-baseline gap-2 mb-2">
               <span id="listing-quality-score" class="listing-quality-score-num">—</span>
-              <span class="text-sm font-medium text-zinc-400">%</span>
+              <span class="text-sm font-medium text-[#737373]">%</span>
             </div>
-            <p id="listing-quality-score-context" class="text-xs text-zinc-400 mb-4">out of 100</p>
+            <p id="listing-quality-score-context" class="text-xs text-[#737373] mb-4">out of 100</p>
             <div id="listing-quality-bar" class="listing-quality-bar-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
               <!-- 60 segments filled by JS -->
             </div>
           </div>
-          <div id="listing-quality-improvements-wrap" class="px-5 pb-5 pt-0 border-t border-[#e4e4e7] mt-4 pt-4 bg-white/50">
-            <p id="listing-quality-summary" class="text-xs text-zinc-500 hidden mb-2"></p>
-            <p class="quality-improve-label text-[#71717a] mb-2">Tips to improve</p>
+          <div id="listing-quality-improvements-wrap" class="px-5 pb-5 pt-0 border-t border-[#e5e5e5] mt-4 pt-4 bg-[#fafafa]">
+            <p id="listing-quality-summary" class="text-xs text-[#525252] hidden mb-2"></p>
+            <p class="quality-improve-label text-[#525252] mb-2">Tips to improve</p>
             <ul id="listing-quality-improvements" class="space-y-2.5 list-none pl-0 m-0 max-h-[220px] overflow-y-auto" aria-label="Ways to improve your listing"></ul>
           </div>
         </div>
 
       </div>
     </main>
-    <div class="p-4 pt-3 border-t border-[#eaeaea] shrink-0 bg-white">
+    <div class="p-4 pt-3 border-t border-[#e5e5e5] shrink-0 bg-white">
       <div class="flex flex-col gap-2">
-        <a href="/flow-marketplaces.html" id="review-next-btn" class="block w-full py-3.5 px-6 rounded-xl bg-black text-white font-semibold text-[15px] hover:bg-zinc-800 transition-colors no-underline text-center flex items-center justify-center gap-2">
+        <a href="/flow-marketplaces.html" id="review-next-btn" class="block w-full py-3.5 px-6 rounded-xl bg-[#0a0a0a] text-white font-semibold text-[15px] hover:bg-[#262626] transition-colors no-underline text-center flex items-center justify-center gap-2">
           <span id="review-next-btn-label">Publish to Shopify</span>
           <img src="https://cdn.jsdelivr.net/npm/simple-icons@v9/icons/shopify.svg" alt="" class="w-5 h-5 shrink-0" style="filter: brightness(0) invert(1);" width="20" height="20" />
         </a>
-        <p class="text-[11px] text-[#555] text-center">Sends this listing to your connected Shopify store as a draft.</p>
+        <p class="text-[11px] text-[#525252] text-center">Sends this listing to your connected Shopify store as a draft.</p>
       </div>
     </div>
   </div>
@@ -922,46 +927,46 @@
 
         if (title.length > 0) {
           score += 12;
-          if (title.length < 10) improvements.push({ priority: 'recommended', text: 'Title is only ' + title.length + ' characters — aim for 10–60 so search and customers understand the product.' });
-          else if (title.length > 60) improvements.push({ priority: 'critical', text: 'SEO title is ' + title.length + '/60 characters — trim to 60 so it doesn’t get cut off in search results.' });
+          if (title.length < 10) improvements.push({ priority: 'recommended', text: 'Title is only ' + title.length + ' characters — aim for 10–60 so search and customers understand the product.', scrollTo: 'modal-section-title', focusId: 'modal-title' });
+          else if (title.length > 60) improvements.push({ priority: 'critical', text: 'SEO title is ' + title.length + '/60 characters — trim to 60 so it doesn’t get cut off in search results.', scrollTo: 'modal-section-title', focusId: 'modal-title' });
         } else {
-          improvements.push({ priority: 'critical', text: 'Add a product title. This is the main line customers and search engines see.' });
+          improvements.push({ priority: 'critical', text: 'Add a product title. This is the main line customers and search engines see.', scrollTo: 'modal-section-title', focusId: 'modal-title' });
         }
 
         if (desc.length > 0) {
           score += 12;
-          if (desc.length < 50) improvements.push({ priority: 'recommended', text: 'Description is ' + desc.length + ' characters — 50+ helps SEO and reduces returns.' });
+          if (desc.length < 50) improvements.push({ priority: 'recommended', text: 'Description is ' + desc.length + ' characters — 50+ helps SEO and reduces returns.', scrollTo: 'modal-section-description', focusId: 'modal-description' });
         } else {
-          improvements.push({ priority: 'critical', text: 'Add a product description. It builds trust and improves search ranking.' });
+          improvements.push({ priority: 'critical', text: 'Add a product description. It builds trust and improves search ranking.', scrollTo: 'modal-section-description', focusId: 'modal-description' });
         }
 
         if (metaTitle.length > 0 && metaTitle.length <= 60) score += 12;
-        else if (metaTitle.length > 60) improvements.push({ priority: 'critical', text: 'Meta title is ' + metaTitle.length + '/60 characters — shorten to 60 for search snippets.' });
-        else if (title.length > 0) improvements.push({ priority: 'recommended', text: 'Set an SEO title (or use the product title). Keep it under 60 characters.' });
-        else improvements.push({ priority: 'recommended', text: 'Add an SEO title (max 60 characters) for how the listing appears in search.' });
+        else if (metaTitle.length > 60) improvements.push({ priority: 'critical', text: 'Meta title is ' + metaTitle.length + '/60 characters — shorten to 60 for search snippets.', scrollTo: 'modal-section-seo', focusId: 'modal-seo-title' });
+        else if (title.length > 0) improvements.push({ priority: 'recommended', text: 'Set an SEO title (or use the product title). Keep it under 60 characters.', scrollTo: 'modal-section-seo', focusId: 'modal-seo-title' });
+        else improvements.push({ priority: 'recommended', text: 'Add an SEO title (max 60 characters) for how the listing appears in search.', scrollTo: 'modal-section-seo', focusId: 'modal-seo-title' });
 
         if (metaDesc.length > 0 && metaDesc.length <= 155) score += 12;
-        else if (metaDesc.length > 155) improvements.push({ priority: 'critical', text: 'Meta description is ' + metaDesc.length + '/155 characters — trim to 155 so it displays fully in search.' });
-        else improvements.push({ priority: 'critical', text: 'Add a meta description (max 155 characters). It’s the snippet shown in Google.' });
+        else if (metaDesc.length > 155) improvements.push({ priority: 'critical', text: 'Meta description is ' + metaDesc.length + '/155 characters — trim to 155 so it displays fully in search.', scrollTo: 'modal-section-seo', focusId: 'modal-meta-description' });
+        else improvements.push({ priority: 'critical', text: 'Add a meta description (max 155 characters). It’s the snippet shown in Google.', scrollTo: 'modal-section-seo', focusId: 'modal-meta-description' });
 
         if (photoCount >= 1) {
           score += 14;
-          if (photoCount === 1) improvements.push({ priority: 'recommended', text: 'You have 1 photo — adding 2–5 images usually improves conversion.' });
+          if (photoCount === 1) improvements.push({ priority: 'recommended', text: 'You have 1 photo — adding 2–5 images usually improves conversion.', scrollTo: 'modal-section-photos', focusId: '' });
         } else {
-          improvements.push({ priority: 'critical', text: 'Add at least one product photo. Listings with images sell better.' });
+          improvements.push({ priority: 'critical', text: 'Add at least one product photo. Listings with images sell better.', scrollTo: 'modal-section-photos', focusId: '' });
         }
         if (photoCount >= 2 && photoCount <= 5) {
           improvements = improvements.filter(function(i) { return i.text !== 'You have 1 photo — adding 2–5 images usually improves conversion.'; });
         }
-        if (priceNum > 0) score += 14; else improvements.push({ priority: 'critical', text: 'Set a price. Customers can’t buy without it.' });
+        if (priceNum > 0) score += 14; else improvements.push({ priority: 'critical', text: 'Set a price. Customers can’t buy without it.', scrollTo: 'modal-section-price', focusId: 'modal-price' });
 
-        if (tagsCount > 0) { score += 8; if (tagsCount < 3) improvements.push({ priority: 'optional', text: 'Add 1–2 more tags (you have ' + tagsCount + ') to improve discoverability.' }); }
-        else improvements.push({ priority: 'recommended', text: 'Add tags (e.g. material, style) so customers can filter and find this product.' });
+        if (tagsCount > 0) { score += 8; if (tagsCount < 3) improvements.push({ priority: 'optional', text: 'Add 1–2 more tags (you have ' + tagsCount + ') to improve discoverability.', scrollTo: 'modal-section-organization', focusId: 'modal-tag-input' }); }
+        else improvements.push({ priority: 'recommended', text: 'Add tags (e.g. material, style) so customers can filter and find this product.', scrollTo: 'modal-section-organization', focusId: 'modal-tag-input' });
 
-        if (!category) improvements.push({ priority: 'recommended', text: 'Choose a category so the store’s filters and search work correctly.' });
-        if (!vendor && title.length > 0) improvements.push({ priority: 'optional', text: 'Add a vendor/brand so the listing looks complete and is easier to find.' });
+        if (!category) improvements.push({ priority: 'recommended', text: 'Choose a category so the store’s filters and search work correctly.', scrollTo: 'modal-section-category', focusId: 'modal-category' });
+        if (!vendor && title.length > 0) improvements.push({ priority: 'optional', text: 'Add a vendor/brand so the listing looks complete and is easier to find.', scrollTo: 'modal-section-organization', focusId: 'modal-vendor' });
         if (!hasVariantValues && (category.toLowerCase().indexOf('apparel') !== -1 || category.toLowerCase().indexOf('cloth') !== -1 || category.toLowerCase().indexOf('shoe') !== -1)) {
-          improvements.push({ priority: 'recommended', text: 'Add Size or Color options in Variants so customers can pick the right option.' });
+          improvements.push({ priority: 'recommended', text: 'Add Size or Color options in Variants so customers can pick the right option.', scrollTo: 'modal-section-variants', focusId: 'modal-variants-add-option' });
         }
 
         var scoreEl = document.getElementById('listing-quality-score');
@@ -979,7 +984,7 @@
           barEl.setAttribute('aria-valuenow', score);
           var segments = 60;
           var filledCount = Math.round((score / 100) * segments);
-          var gradientStops = [{ p: 0, r: 245, g: 158, b: 11 }, { p: 0.35, r: 234, g: 179, b: 8 }, { p: 0.7, r: 132, g: 204, b: 22 }, { p: 1, r: 34, g: 197, b: 94 }];
+          var gradientStops = [{ p: 0, r: 212, g: 212, b: 212 }, { p: 0.5, r: 234, g: 179, b: 8 }, { p: 1, r: 234, g: 179, b: 8 }];
           function interpColor(t) {
             var i = 0;
             while (i + 1 < gradientStops.length && gradientStops[i + 1].p < t) i++;
@@ -1026,10 +1031,31 @@
               var rowClass = 'quality-improve-row ' + i.priority;
               var icon = i.priority === 'critical' ? 'alert-circle' : i.priority === 'recommended' ? 'info' : 'circle';
               var safe = (i.text || '').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-              html += '<li class="' + rowClass + '"><span class="quality-improve-icon" aria-hidden="true"><i data-lucide="' + icon + '" class="w-5 h-5"></i></span><span class="quality-improve-text">' + safe + '</span></li>';
+              var scrollTo = (i.scrollTo || '').replace(/"/g, '&quot;');
+              var focusId = (i.focusId || '').replace(/"/g, '&quot;');
+              html += '<li class="' + rowClass + '" role="button" tabindex="0" data-scroll-to="' + scrollTo + '" data-focus-id="' + focusId + '" aria-label="Scroll to section">';
+              html += '<span class="quality-improve-icon" aria-hidden="true"><i data-lucide="' + icon + '" class="w-5 h-5"></i></span><span class="quality-improve-text">' + safe + '</span></li>';
             });
             listEl.innerHTML = html;
             if (typeof lucide !== 'undefined') lucide.createIcons();
+            listEl.querySelectorAll('.quality-improve-row[data-scroll-to]').forEach(function(row) {
+              var scrollToId = row.getAttribute('data-scroll-to');
+              var focusId = row.getAttribute('data-focus-id');
+              if (!scrollToId) return;
+              function goToSection() {
+                var section = document.getElementById(scrollToId);
+                if (!section) return;
+                section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                section.classList.add('section-highlight');
+                if (focusId) {
+                  var el = document.getElementById(focusId);
+                  if (el) setTimeout(function() { el.focus(); }, 400);
+                }
+                setTimeout(function() { section.classList.remove('section-highlight'); }, 2500);
+              }
+              row.addEventListener('click', goToSection);
+              row.addEventListener('keydown', function(e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToSection(); } });
+            });
           }
         }
       }
@@ -1472,17 +1498,6 @@
           processNext(0);
         });
       })();
-
-      var smartSuggestBanner = document.getElementById('smart-suggest-banner-btn');
-      if (smartSuggestBanner) {
-        smartSuggestBanner.addEventListener('click', function() {
-          var scrollTarget = document.getElementById('photos-add-plus-btn') || document.getElementById('find-photos-online-btn');
-          if (scrollTarget) {
-            scrollTarget.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(function() { scrollTarget.focus(); }, 400);
-          }
-        });
-      }
 
       if (storesList) {
         storesList.innerHTML = '';
