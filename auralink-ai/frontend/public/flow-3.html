@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="auralink-publishing-url" content="http://localhost:8001" />
+  <meta name="synclyst-publishing-url" content="https://synclyst-publishing-299567386855.us-central1.run.app" />
   <meta name="auralink-api-url" content="http://localhost:8000" />
   <meta name="synclyst-backend-url" content="https://auralink-api-299567386855.us-central1.run.app" />
   <!-- Optional: set content to a Shopify login/lookup URL to send users there instead of the connect form (e.g. from Shopify Identity). Leave empty to use the connect form. -->
@@ -607,8 +608,13 @@
         var meta = document.querySelector('meta[name="auralink-publishing-url"]');
         var url = (meta && meta.getAttribute('content')) ? meta.getAttribute('content').trim().replace(/\/$/, '') : 'http://localhost:8001';
         var host = window.location.hostname;
-        if (host && host !== 'localhost' && host !== '127.0.0.1' && (url.indexOf('localhost') !== -1 || url.indexOf('127.0.0.1') !== -1)) {
-          url = window.location.protocol + '//' + host + ':8001';
+        if (host && host !== 'localhost' && host !== '127.0.0.1') {
+          var prodMeta = document.querySelector('meta[name="synclyst-publishing-url"]');
+          if (prodMeta && prodMeta.getAttribute('content') && prodMeta.getAttribute('content').trim()) {
+            url = prodMeta.getAttribute('content').trim().replace(/\/$/, '');
+          } else {
+            url = window.location.protocol + '//' + host + ':8001';
+          }
         }
         return url;
       }
@@ -1638,12 +1644,15 @@
         var pubUrl = getPublishingUrl();
         if (nextBtn) { nextBtn.disabled = true; var lbl = nextBtn.querySelector('#review-next-btn-label'); if (lbl) lbl.textContent = 'Publishing…'; nextBtn.style.pointerEvents = 'none'; nextBtn.style.opacity = '0.7'; }
 
+        var publishAbort = new AbortController();
+        var timeoutId = setTimeout(function() { publishAbort.abort(); }, 15000);
+
         function getToken() {
           try {
             var t = sessionStorage.getItem('auralink_jwt');
             if (t) return Promise.resolve(t);
           } catch (e) {}
-          return fetch(pubUrl + '/auth/dev-token')
+          return fetch(pubUrl + '/auth/dev-token', { signal: publishAbort.signal })
             .then(function(r) {
               if (r.ok) return r.json();
               return r.json().then(function(j) { throw new Error(j.error || r.statusText || 'Could not get token'); }).catch(function(e) { if (e.message) throw e; throw new Error('Could not get token'); });
@@ -1666,7 +1675,8 @@
           var base = pubUrl.replace(/\/$/, '');
           // Require user to have logged into their store before we can publish
           return fetch(base + '/api/user/connected-stores', {
-            headers: { 'Authorization': 'Bearer ' + token }
+            headers: { 'Authorization': 'Bearer ' + token },
+            signal: publishAbort.signal
           })
             .then(function(r) {
               if (!r.ok) return r.json().then(function(j) { throw new Error(j.error || r.statusText); }).catch(function() { throw new Error(r.statusText); });
@@ -1687,7 +1697,8 @@
           return fetch(base + '/api/listings', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-            body: JSON.stringify({ universal_data: universal_data })
+            body: JSON.stringify({ universal_data: universal_data }),
+            signal: publishAbort.signal
           })
             .then(function(r) {
               if (!r.ok) return r.json().then(function(j) { throw new Error(j.error || r.statusText); });
@@ -1699,7 +1710,8 @@
               return fetch(base + '/api/listings/publish', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
-                body: JSON.stringify({ listing_id: listingId, platforms: platforms })
+                body: JSON.stringify({ listing_id: listingId, platforms: platforms }),
+                signal: publishAbort.signal
               }).then(function(r2) {
                 if (!r2.ok) return r2.json().then(function(j) { throw new Error(j.error || r2.statusText); });
                 return r2.json();
@@ -1707,14 +1719,18 @@
             });
         })
           .then(function(result) {
+            clearTimeout(timeoutId);
             if (result === undefined) return;
             window.location.href = '/flow-success.html';
           })
           .catch(function(err) {
+            clearTimeout(timeoutId);
             if (nextBtn) { nextBtn.disabled = false; var lbl = nextBtn.querySelector('#review-next-btn-label'); if (lbl) lbl.textContent = 'Publish to Shopify'; nextBtn.style.pointerEvents = ''; nextBtn.style.opacity = ''; }
             var msg = err.message || 'Publish failed. Try again.';
-            if (msg === 'Failed to fetch' || err.name === 'TypeError') {
-              msg = 'Couldn\'t reach the publishing service (port 8001). Start it from auralink-ai/publishing: npm run dev. See PUBLISH-TO-SHOPIFY.md or CONNECT.md.';
+            if (err.name === 'AbortError') {
+              msg = 'Publish timed out. The publishing service may not be running or reachable. On production, deploy the publishing service and set the synclyst-publishing-url meta tag.';
+            } else if (msg === 'Failed to fetch' || err.name === 'TypeError') {
+              msg = 'Couldn\'t reach the publishing service. On synclyst.app you need to deploy the publishing API (see auralink-ai/publishing) and set synclyst-publishing-url in this page. Locally: run "npm run dev" in auralink-ai/publishing.';
             }
             alert(msg);
           });
