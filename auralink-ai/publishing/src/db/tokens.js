@@ -23,7 +23,10 @@ export async function upsertToken(row) {
     return row;
   }
   const db = getSupabase();
-  if (!db) throw new Error('Database not configured');
+  if (!db) {
+    devUpsertToken(row);
+    return row;
+  }
   const access_enc = row.access_token ? encrypt(row.access_token) : null;
   const refresh_enc = row.refresh_token ? encrypt(row.refresh_token) : null;
   const payload = {

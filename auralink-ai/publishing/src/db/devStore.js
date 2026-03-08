@@ -1,7 +1,9 @@
 /**
- * In-memory store for development when Supabase is not configured.
+ * In-memory store for development when Supabase is not configured or unavailable.
  * Allows dev-token, connect, create listing, and publish to work without a database.
  */
+import { getSupabase } from './client.js';
+
 const DEV_USER_ID = 'dev-local';
 
 const listings = new Map(); // listingId -> { user_id, universal_data, status }
@@ -12,8 +14,11 @@ export function getDevUserId() {
   return DEV_USER_ID;
 }
 
+/** True when Supabase is not configured OR client failed to init (e.g. wrong key format). */
 export function isDevMode() {
-  return process.env.SUPABASE_URL == null || process.env.SUPABASE_URL === '';
+  if (process.env.SUPABASE_URL == null || process.env.SUPABASE_URL === '') return true;
+  if (getSupabase() === null) return true;
+  return false;
 }
 
 // --- Listings (used by publish router when no Supabase)

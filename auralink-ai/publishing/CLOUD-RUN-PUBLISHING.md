@@ -48,8 +48,8 @@ Add at least:
 | **SHOPIFY_API_KEY** | Your Shopify app **Client ID** from [Partners](https://partners.shopify.com) |
 | **SHOPIFY_API_SECRET** | Your Shopify app **Client secret** |
 | **TOKEN_ENCRYPTION_KEY** | At least 32 characters; used to encrypt Shopify tokens at rest |
-| **SUPABASE_URL** | Your Supabase project URL (if you use DB for listings/tokens) |
-| **SUPABASE_SERVICE_KEY** | Supabase service role key |
+| **SUPABASE_URL** | Your Supabase project URL, e.g. `https://xxxx.supabase.co` |
+| **SUPABASE_SERVICE_KEY** | Use the **Legacy service_role** key: Supabase Dashboard → Settings → API → tab **"Legacy anon, service_role API keys"** → copy **service_role** (long JWT). Do not use the new `sb_secret_` key here; the client library works best with the Legacy key. |
 
 **ENABLED_PLATFORMS** defaults to `shopify`; leave it unless you enable more.
 

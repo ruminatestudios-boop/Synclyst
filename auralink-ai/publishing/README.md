@@ -26,8 +26,9 @@ Multi-platform listing publish service. One POST with a universal listing → pu
    # Add platform keys when you connect each (see below).
    ```
 
-3. **Database**
+3. **Database** (optional but recommended for production)
    - In Supabase SQL editor, run `src/db/schema.sql` to create `users`, `platform_tokens`, `listings`, `publish_results`.
+   - If Supabase is not configured or the client fails to init (e.g. wrong key format), the service runs in **in-memory mode**: dev token, connect, and publish work, but data is lost on restart. Use Supabase for persistence.
 
 4. **Run**
    ```bash
@@ -45,7 +46,7 @@ Multi-platform listing publish service. One POST with a universal listing → pu
 | `FRONTEND_URL` | Where to redirect after OAuth (e.g. dashboard) |
 | `JWT_SECRET` | Secret to verify SyncLyst user JWTs |
 | `SUPABASE_URL` | Supabase project URL |
-| `SUPABASE_SERVICE_KEY` | Supabase service role key |
+| `SUPABASE_SERVICE_KEY` | Supabase **service role** key. For best compatibility with `@supabase/supabase-js`, use the **Legacy** key: Supabase Dashboard → Settings → API → **Legacy anon, service_role API keys** → copy **service_role**. The new `sb_secret_` keys work in some setups but Legacy is more reliable. |
 | `TOKEN_ENCRYPTION_KEY` | At least 32 characters; used to encrypt access/refresh tokens at rest |
 | `SHOPIFY_API_KEY` / `SHOPIFY_API_SECRET` | From Shopify Partner Dashboard app |
 | `TIKTOK_APP_KEY` / `TIKTOK_APP_SECRET` | From TikTok Shop Seller Center |
