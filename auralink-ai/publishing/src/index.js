@@ -12,10 +12,24 @@ import { exportRouter } from './routes/export.js';
 
 const app = express();
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:3000';
-const corsOrigin = process.env.NODE_ENV === 'production'
-  ? (FRONTEND_URL.includes(',') ? FRONTEND_URL.split(',').map((u) => u.trim()) : FRONTEND_URL)
-  : true; // allow any origin in development (e.g. phone at http://192.168.x.x:3000)
-app.use(cors({ origin: corsOrigin, credentials: true }));
+
+const allowedOrigins = FRONTEND_URL.includes(',')
+  ? FRONTEND_URL.split(',').map((u) => u.trim()).filter(Boolean)
+  : [FRONTEND_URL];
+if (process.env.NODE_ENV !== 'production') {
+  allowedOrigins.push(true);
+}
+app.use(cors({
+  origin: (origin, cb) => {
+    if (!origin) return cb(null, true);
+    if (allowedOrigins[0] === true) return cb(null, true);
+    if (allowedOrigins.includes(origin)) return cb(null, origin);
+    cb(null, false);
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-User-Id'],
+}));
 app.use(express.json());
 
 app.use('/auth', authRouter);
