@@ -1685,6 +1685,11 @@
         var vendor = (vendorInput && vendorInput.value) ? vendorInput.value.trim() : '';
         if (!title && !description) return;
         var apiUrl = (window.AURALINK_CONFIG && window.AURALINK_CONFIG.API_URL) || 'http://localhost:8000';
+        var host = window.location.hostname;
+        if (host && host !== 'localhost' && host !== '127.0.0.1') {
+          var prodBackend = document.querySelector('meta[name="synclyst-backend-url"]');
+          if (prodBackend && prodBackend.getAttribute('content')) apiUrl = prodBackend.getAttribute('content').trim().replace(/\/$/, '');
+        }
         fetch(apiUrl + '/api/v1/vision/optimize-seo', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

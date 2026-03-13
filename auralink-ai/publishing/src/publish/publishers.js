@@ -11,17 +11,40 @@ import { toAmazon } from '../translators/amazon.js';
 
 const APP_URL = process.env.APP_URL || 'http://localhost:8001';
 
+function shopifyErrorMessage(e) {
+  if (!e.response) return e.message || 'Network or server error';
+  const d = e.response.data;
+  if (d && typeof d.errors === 'object') {
+    const arr = d.errors?.product || d.errors?.base;
+    if (Array.isArray(arr)) return arr.join('. ');
+    if (typeof arr === 'string') return arr;
+  }
+  if (d && typeof d.error === 'string') return d.error;
+  return e.response.statusText || `Shopify API ${e.response.status}`;
+}
+
 export async function publishToShopify(listing, accessToken, row) {
   const payload = toShopify(listing);
   const shop = row?.shop_domain;
   if (!shop) throw new Error('Missing shop_domain');
+  console.log('[Shopify] Publishing to shop:', shop, 'title:', (listing?.title || '').slice(0, 50));
   const { metafields, product } = payload;
   const createBody = { product };
-  const { data } = await axios.post(
-    `https://${shop}/admin/api/2024-01/products.json`,
-    createBody,
-    { headers: { 'X-Shopify-Access-Token': accessToken, 'Content-Type': 'application/json' } }
-  );
+  let data;
+  try {
+    const res = await axios.post(
+      `https://${shop}/admin/api/2024-01/products.json`,
+      createBody,
+      { headers: { 'X-Shopify-Access-Token': accessToken, 'Content-Type': 'application/json' } }
+    );
+    data = res.data;
+    const productId = data?.product?.id;
+    console.log('[Shopify] Product created:', productId ? `id=${productId}` : 'no id', 'shop:', shop);
+  } catch (e) {
+    const msg = shopifyErrorMessage(e);
+    console.error('[Shopify] Create failed shop=', shop, 'error=', msg);
+    throw new Error(msg);
+  }
   const id = data?.product?.id;
   if (id && Array.isArray(metafields) && metafields.length > 0) {
     for (const m of metafields) {

@@ -264,10 +264,21 @@ export function toShopify(listing) {
     tags: tagsStr,
     variants,
     images: photos.map((src, i) => {
-      const img = typeof src === 'string' ? { src } : { src: src.url || src.src || src };
-      img.alt = imageAltText(listing, i, totalImages);
+      const raw = typeof src === 'string' ? src : (src?.url || src?.src || src);
+      const img = {};
+      if (typeof raw === 'string' && raw.startsWith('data:')) {
+        const base64Match = raw.match(/^data:[^;]+;base64,(.+)$/);
+        if (base64Match && base64Match[1]) {
+          img.attachment = base64Match[1].replace(/\s/g, '');
+        } else {
+          img.src = raw;
+        }
+      } else if (raw) {
+        img.src = raw;
+      }
+      if (img.attachment || img.src) img.alt = imageAltText(listing, i, totalImages);
       return img;
-    }),
+    }).filter((img) => img.attachment || img.src),
     status: 'draft',
   };
   if (options.length > 0) product.options = options;

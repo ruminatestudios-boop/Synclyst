@@ -613,6 +613,26 @@
         return url;
       }
 
+      (function requireShopifyConnected() {
+        var platforms = loadSelected();
+        if (!platforms || platforms.indexOf('shopify') === -1) return;
+        var base = getPublishingUrl().replace(/\/$/, '');
+        var token = null;
+        try { token = sessionStorage.getItem('auralink_jwt'); } catch (e) {}
+        var getToken = token ? Promise.resolve(token) : fetch(base + '/auth/dev-token').then(function(r) { return r.ok ? r.json() : null; }).then(function(d) { return d && d.token ? d.token : null; });
+        getToken.then(function(t) {
+          if (!t) { window.location.href = '/stores-connect-shopify.html?return=flow-3'; return; }
+          return fetch(base + '/api/user/connected-stores', { headers: { 'Authorization': 'Bearer ' + t } })
+            .then(function(r) { return r.ok ? r.json() : {}; })
+            .then(function(stores) {
+              if (!stores.shopify || stores.shopify.status !== 'connected') {
+                window.location.href = '/stores-connect-shopify.html?return=flow-3';
+              }
+            })
+            .catch(function() { window.location.href = '/stores-connect-shopify.html?return=flow-3'; });
+        }).catch(function() { window.location.href = '/stores-connect-shopify.html?return=flow-3'; });
+      })();
+
       var draft = loadDraft();
       var selected = loadSelected();
       var modalTags = Array.isArray(draft.tags) ? draft.tags.slice() : [];
@@ -1537,6 +1557,11 @@
         var vendor = (vendorInput && vendorInput.value) ? vendorInput.value.trim() : '';
         if (!title && !description) return;
         var apiUrl = (window.AURALINK_CONFIG && window.AURALINK_CONFIG.API_URL) || 'http://localhost:8000';
+        var host = window.location.hostname;
+        if (host && host !== 'localhost' && host !== '127.0.0.1') {
+          var prodBackend = document.querySelector('meta[name="synclyst-backend-url"]');
+          if (prodBackend && prodBackend.getAttribute('content')) apiUrl = prodBackend.getAttribute('content').trim().replace(/\/$/, '');
+        }
         fetch(apiUrl + '/api/v1/vision/optimize-seo', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },

@@ -85,21 +85,29 @@ publishRouter.post('/publish', authMiddleware, async (req, res) => {
     const userId = req.userId;
     const { listing_id, platforms } = req.body || {};
     if (!listing_id || !Array.isArray(platforms) || platforms.length === 0) {
-      return res.status(400).json({ error: 'listing_id and platforms array required' });
+      const msg = 'listing_id and platforms array required';
+      console.warn('[Publish] 400:', msg);
+      return res.status(400).json({ error: msg });
     }
 
     const listingRow = await getListingById(listing_id);
-    if (!listingRow) return res.status(404).json({ error: 'Listing not found' });
+    if (!listingRow) {
+      console.warn('[Publish] 404 listing not found:', listing_id);
+      return res.status(404).json({ error: 'Listing not found' });
+    }
     if (listingRow.user_id !== storageUserId(userId)) return res.status(403).json({ error: 'Not your listing' });
 
     const listing = listingRow.universal_data || listingRow;
     const quality = checkListingQuality(listingRow);
     if (!quality.ok) {
-      return res.status(400).json({ error: quality.warning || 'Listing quality check failed', code: 'quality_gate' });
+      const msg = quality.warning || 'Listing quality check failed';
+      console.warn('[Publish] 400 quality_gate:', msg);
+      return res.status(400).json({ error: msg, code: 'quality_gate' });
     }
 
     const missing = validateListing(listingRow);
     if (missing.length > 0) {
+      console.warn('[Publish] 400 missing fields:', missing.join(', '));
       return res.status(400).json({ error: 'Missing required fields', fields: missing });
     }
 
@@ -135,6 +143,13 @@ publishRouter.post('/publish', authMiddleware, async (req, res) => {
     });
 
     const results = await Promise.allSettled(publishJobs);
+    if (platforms.includes('shopify')) {
+      const shopifyResult = results[platforms.indexOf('shopify')];
+      const status = shopifyResult.status;
+      const value = shopifyResult.status === 'fulfilled' ? shopifyResult.value : null;
+      const reason = shopifyResult.status === 'rejected' ? shopifyResult.reason : null;
+      console.log('[Publish] Shopify result:', status, value ? 'success' : '', reason ? reason.message : '');
+    }
     const platformResults = {};
     platforms.forEach((platform, index) => {
       const r = results[index];
